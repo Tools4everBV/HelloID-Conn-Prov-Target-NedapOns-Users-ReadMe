@@ -26,7 +26,8 @@
 ## Introduction
 This Repository does only contains the readme. The source code can be found in a private Repositry and is meant only for internal use. Link to Repositry: [Nedap Ons Users](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Users)
 
-Nedap Ons provides an REST API to programmatically interact with its services and data.
+Nedap Ons provides an REST API to programmatically interact with its services and data. 
+The connector manages Nedap account and Provisioning roles. The roles can be assigned as entitlement and the scope of the teams and locations are calculated based on property in the HelloID contracts. To map the property to actual Nedap Teams or Locations an additional mapping is required. 
 
 
 ## Getting Started
@@ -150,7 +151,7 @@ The following table displays an overview of the functionality for the Nedap Ons 
 | ------------ | ----------- |----------- |----------- |
 | Assign Authorizations Roles |Yes|Yes|No
 | Set a users DefaultScope |Yes|No|No
-| Set default scope with Role Assignin|Yes|No|No
+| Set default scope with Role assignment|Yes |No|No
 | Set custom Locations (Clienten) scope|Yes|Yes, *Additional mapping required*|No
 | Set custom Teams (Medewerkers) scope|Yes|Yes, *Additional mapping required*|No
 | Set duration of scope (ValidFrom / ValidTo) |No, *This should be managed in HelloID with business rules*|No|No
