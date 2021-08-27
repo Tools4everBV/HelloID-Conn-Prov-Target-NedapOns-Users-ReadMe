@@ -24,7 +24,7 @@
 
 
 ## Introduction
-This Repository does only contains the readme. The source code can be found in a private Repoistry and is meant only for internal use. Link to Repoistry: [Nedap Ons Users](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Users)
+This Repository does only contains the readme. The source code can be found in a private Repositry and is meant only for internal use. Link to Repositry: [Nedap Ons Users](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Users)
 
 Nedap Ons provides an REST API to programmatically interact with its services and data.
 
