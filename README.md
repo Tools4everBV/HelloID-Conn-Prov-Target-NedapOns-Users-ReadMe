@@ -26,8 +26,8 @@
 ## Introduction
 This Repository does only contains the readme. The source code can be found in a private Repositry and is meant only for internal use. Link to Repositry: [Nedap Ons Users](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Users)
 
-Nedap Ons provides an REST API to programmatically interact with its services and data. 
-The connector manages Nedap account and Provisioning roles. The roles can be assigned as entitlement and the scope of the teams and locations are calculated based on property in the HelloID contracts. To map the property to actual Nedap Teams or Locations an additional mapping is required. 
+Nedap Ons provides an REST API to programmatically interact with its services and data.
+The connector manages Nedap account and Provisioning roles. The roles can be assigned as entitlement and the scope of the teams and locations are calculated based on property in the HelloID contracts. To map the property to actual Nedap Teams or Locations an additional mapping is required.
 
 
 ## Getting Started
@@ -43,16 +43,19 @@ The following settings are required to connect to the API.
 | Certificate Password |    Password of the certificate                                       |
 | Mapping File (Locations)|  The Path to the mapping file (HR Location => Nedap Loaction 1:M) |
 | Mapping File (Teams)|  The Path to the mapping file (HR Teams =>  Nedap Teams 1:M)          |
+|Directory Cache Locations Teams|  Cache directory for current Nedap Ons locations and current Nedap Ons teams      |
 | CSV separation Character| Mapping File CSV Separation Character         |
 |Validate Team and Location|  Enable validation of mapped locations and teams       |
+
 
 
 ### Prerequisites
 
  - Direct HR employees synchronization with Nedap to manage the employees in Nedap
 - A valid Nedap Certificate (Tools4ever need to requests a certificate by Nedap to access the API)
-- Mapping between HR departments to Nedap Clients/Locations for determining the scope for the roles
-- Mapping between HR Teams to Nedap Team/Employee for determining the scope for the roles.
+- Mapping between HR departments to Nedap Clients/Locations for determining the scope for the Nedap Provisioning roles
+- Mapping between HR Teams to Nedap Team/Employee for determining the scope for the Nedap Provisioning roles.
+- The HelloID DataStorage must be enabled
 - An custom property on the HelloID contract with a combination of the employeeCode and EmploymentCode named: [custom.NedapOnsIdentificationNo]
 Example:
   ```javascript
@@ -66,9 +69,7 @@ Example:
 ### Remarks
 
  - This connector does only manages the users and the authorizations. And is intended to be used along with a direct sync HR. AFAS for example. So the Employee objects are not managed in this connector. The connector depends on this sync. When an employee object is not found the user cannot be created.
- - At the moment this connnector get the displayname of the role from Nedap - with a webrequest - instead of using the displaynname of the entitlement. Because the displayname of the role isn't provided in the grant persmissions script.
- - The connector uses DataStorage to keep track of the current permissions. This might be a temporary solution until the dev-provisioning team improves the software. The DataStorage is behind a feature flag  so must be enabled before it can be used in your tenant.
- - When using the DataStorage the performance of grants and revokes will significantly decrease.
+ - The connector uses DataStorage to keep track of the current permissions. The DataStorage is behind a feature flag so must be enabled before it can be used in your tenant.
 
 ### Provisioning
 Using this connector you will have the ability to create and manage the following items in Nedap:
@@ -94,7 +95,7 @@ Using this connector you will have the ability to create and manage the followin
 
 
 #### Update:
-* Update attributes of the corresponding user account as configured in the connector mapping.
+* Update does not make changes, It's not required
 * Create new user account for each new unique (employeeId + contact sequence number) combination.
 * Delete  Remove account reference from Aref  -*See delete action* -
 
@@ -107,7 +108,7 @@ Using this connector you will have the ability to create and manage the followin
 #### Delete:
 *  Remove account reference from AccountReferences
   Result:
-    * Remove the Entitlement “Nedap Account”
+    * Remove the Entitlement "Nedap Account"
     *	Remove the Account Reference in HelloID
     *	Audit Logs for each account deleted
 
@@ -183,14 +184,9 @@ _For more information about our HelloID PowerShell connectors, please refer to o
 
 ### Connector Improvements (Todo)
   * [ ] Use the .net variant to serialize (System.Web.Script.Serialization.JavaScriptSerializer) the $entitlementContext , because this object can be quite large
-  * [X] Test the connector with 500 Users
-  * [ ] AduitLog success only if Nedap Request = Success
   * [ ] Certitficaat Object - in configuration (To supports the cloudagent
   * [ ] Add Roles with Default scope <= Nedap Functionalitiy
   * [ ] Default Scope ? Update the default Scope for a user  <= Nedap Functionalitiy
-  * [ ] Create a DataStore to Get the Nedap Locations
-  * [ ] Create a DataStore to Get the Nedap Teams
-  * [ ] Create a static Datastore to save the mapping for the locations and the teams, to get rid of the CSV files
   * [ ] Create new SA forms to manage the datastore
   * [ ] Add PermissionID string to entitlement reference instead of calculate in the grant script
 
