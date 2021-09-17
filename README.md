@@ -1,4 +1,4 @@
-# HelloID-Conn-Prov-Target-NedapONS
+# HelloID-Conn-Prov-Target-NedapONS-Users-ReadMe
 <p align="center">
   <img src="https://user-images.githubusercontent.com/68013812/94918899-c672c700-04b3-11eb-9132-7125bbf77fa5.png">
 </p>
@@ -159,7 +159,7 @@ The following table displays an overview of the functionality for the Nedap Ons 
 
 
 
-### Remote Nedap documentatie
+### Remote Nedap documentation
 * Nedap API Documentation → [klik](https://www.ons-api.nl/APIS.html)
 * Nedap ONS Authorization manual → [klik](https://ons-api.nl/support/Shield.html)
 
@@ -185,9 +185,6 @@ _For more information about our HelloID PowerShell connectors, please refer to o
 ### Connector Improvements (Todo)
   * [ ] Use the .net variant to serialize (System.Web.Script.Serialization.JavaScriptSerializer) the $entitlementContext , because this object can be quite large
   * [ ] Certitficaat Object - in configuration (To supports the cloudagent
-  * [ ] Add Roles with Default scope <= Nedap Functionalitiy
-  * [ ] Default Scope ? Update the default Scope for a user  <= Nedap Functionalitiy
-  * [ ] Create new SA forms to manage the datastore
   * [ ] Add PermissionID string to entitlement reference instead of calculate in the grant script
 
 
