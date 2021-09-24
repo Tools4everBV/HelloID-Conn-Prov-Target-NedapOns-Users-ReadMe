@@ -15,6 +15,7 @@
     * [GetPersmissions](#getpersmissions)
     * [Grand](#grand)
     * [Persmissions Grant/Update/Revoke](#Persmissions-Grant/Update/Revoke)
+  * [Supported Properties](Supported-Properties)  
 * [Fact Sheet](#Fact-Sheet)
   * [Remote Nedap documentatie](#Remote-Nedap-documentatie)
 * [Setup the connector](Setup-The-Connector)
@@ -132,6 +133,17 @@ Using this connector you will have the ability to create and manage the followin
     *	Audit Logs for each entitlement with a summary of the Scope (Location and Teams) in the Nedap Role.
     * SubPermissions for each entitlement with an Account and location/team combination
 
+### Supported Properties
+| PropertyName | Notes |
+| ------------ | ------------|
+| ContractRequiredAtLogin |  |
+| SsoEnabled |  |
+| PasswordChange |  |
+| UserName | Mapped as employee number + Employment Sequence Number|
+
+
+
+___________
 
 ## Fact Sheet
 The following table displays an overview of the functionality for the Nedap Ons connector for HelloID Provisioning and Service Automation.
