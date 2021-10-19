@@ -1,4 +1,11 @@
 # HelloID-Conn-Prov-Target-NedapONS-Users-ReadMe
+
+> :warning: **_Information_**   <br />This connector requires the existence of Nedap Employees inside Nedap Ons. Limited Nedap employee support can be achieved using [this connector](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Employee-Readme). 
+<br />Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap employee) are required.
+
+<br />
+<br />
+
 <p align="center">
   <img src="https://user-images.githubusercontent.com/68013812/94918899-c672c700-04b3-11eb-9132-7125bbf77fa5.png">
 </p>
