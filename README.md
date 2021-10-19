@@ -169,11 +169,12 @@ The following table displays an overview of the functionality for the Nedap Ons 
 
 |Nedap Authorizations |Supported by  Nedap    |Supported by  HelloID provisioning |Supported by HelloID Service Automation|
 | ------------ | ----------- |----------- |----------- |
-| Assign Authorizations Roles |Yes|Yes|No
-| Set a users DefaultScope (standaard bereik) |Yes|No|No
-| Set default scope with Role assignment (standaard bereik)|Yes |No|No
-| Set custom Locations (Clienten) scope|Yes|Yes, *Additional mapping required*|No
-| Set custom Teams (Medewerkers) scope|Yes|Yes, *Additional mapping required*|No
+| Set a user's DefaultScope (standaard bereik) |Yes|No, because of missing Nedap support for reading current value of default scope|No
+| Assign role with custom scope (aangepast bereik)|Yes |Yes |No
+| Assign role with default scope (standaard bereik)|Yes |No, because of missing Nedap feature to manage the default roles|No
+| Assign role with role assignment scope (rol bereik)|No |No |No
+| Set custom Locations (Clienten) scope in role assignment|Yes|Yes, *Additional mapping required*|No
+| Set custom Teams (Medewerkers) scope in role assignment|Yes|Yes, *Additional mapping required*|No
 | Set duration of scope (ValidFrom / ValidTo) |No, *This should be managed in HelloID with business rules*|No|No
 
 
