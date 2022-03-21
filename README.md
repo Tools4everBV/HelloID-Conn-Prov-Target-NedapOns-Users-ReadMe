@@ -6,7 +6,7 @@
 
 <br />
 
-> :warning: **_Information_**   <br />This connector requires the existence of Nedap Employees inside Nedap Ons. Limited Nedap employee support can be achieved using [this connector](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Employee-Readme). 
+> :warning: **_Information_**   <br />This connector requires the existence of Nedap Employees inside Nedap Ons. Limited Nedap employee support can be achieved using [this connector](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Employee-Readme).
 <br />Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap employee) are required.
 
 <br />
@@ -28,7 +28,7 @@
     * [GetPersmissions](#getpersmissions)
     * [Grand](#grand)
     * [Persmissions Grant/Update/Revoke](#Persmissions-Grant/Update/Revoke)
-  * [Supported Properties](Supported-Properties)  
+  * [Supported Properties](Supported-Properties)
 * [Fact Sheet](#Fact-Sheet)
   * [Remote Nedap documentatie](#Remote-Nedap-documentatie)
 * [Setup the connector](Setup-The-Connector)
@@ -65,10 +65,11 @@ The following settings are required to connect to the API.
 
 ### Prerequisites
 
- - Direct HR employees synchronization with Nedap to manage the employees in Nedap
+- Direct HR employees synchronization with Nedap to manage the employees in Nedap
 - A valid Nedap Certificate (Tools4ever need to requests a certificate by Nedap to access the API)
 - Mapping between HR departments to Nedap Clients/Locations for determining the scope for the Nedap Provisioning roles
 - Mapping between HR Teams to Nedap Team/Employee for determining the scope for the Nedap Provisioning roles.
+- Determine the scope types that are required for the role assignments. The connector supports default ten scope possibilities. The overview can be overwhelming to the customer in the entitlement overview. This means that there are ten entitlements created per Nedap Role. Please remove the entitlement types which not apply to your needs, by removing the code in the entitlement script.
 - The HelloID DataStorage must be enabled
 - An custom property on the HelloID contract with a combination of the employeeCode and EmploymentCode named: [custom.NedapOnsIdentificationNo]
 Example:
@@ -84,6 +85,8 @@ Example:
 
  - This connector does only manages the users and the authorizations. And is intended to be used along with a direct sync HR. AFAS for example. So the Employee objects are not managed in this connector. The connector depends on this sync. When an employee object is not found the user cannot be created.
  - The connector uses DataStorage to keep track of the current permissions. The DataStorage is behind a feature flag so must be enabled before it can be used in your tenant.
+ - Please be careful when changing/adding the permission types. Removing a permission type is not a problem, but adding them (again) might encounter unexpected behavior. The displayname of the permissions are cached in HelloID, and they only refresh after reaching a certain time limit. This cache means that the displayname of the permissions aren't directly saved in HelloID, and likewise not in the PowerShell scripts. The Permissions script relies on the PermissionsDisplayname and cannot process the permissions without the displayname. The entitlements are shown in the entitlement HelloID overview, but cannot be used until the names are properly cached.
+
 
 ### Provisioning
 Using this connector you will have the ability to create and manage the following items in Nedap:
@@ -95,7 +98,7 @@ Using this connector you will have the ability to create and manage the followin
 | Update.ps1  | Creates, update or deletes Account references           |
 | Delete.ps1  |  Removes account reference(s)    _(Success = True)_      |
 | permission.ps1 | Grant/Update/Revoke Nedap Roles                      |
-| entitlements.ps1  |  Get Nedap Roles, with 6 options _(See below)_ |
+| entitlements.ps1  |  Get Nedap Roles, with 10 options _(See below)_ |
 
 
 #### Create:
@@ -128,13 +131,20 @@ Using this connector you will have the ability to create and manage the followin
 
 #### Get Permissions
 *	Get Nedap Provisioning Roles (Name + GUID)
-  Entitlement options
-    * All Clients
-    * No Clients
-    * Calculated Clients based on Contracts (External Mapping is needed)
-    * All Teams
-    * No Teams
-    * Calculated Teams based on Contracts (External Mapping is needed)
+  Entitlement options: *(Please keep only the scopes the cusomter need)*
+    * Custom Scope
+      * Clients
+        * All Clients
+        * Clients on my Roster
+        * Clients on my Planning
+        * No Clients
+        * Calculated Clients based on Contracts (External Mapping is needed)
+      * Teams
+        * All Teams
+        * No Teams
+        * Calculated Teams based on Contracts (External Mapping is needed)
+    * DefaultScoped
+    * RoleScoped
 
 #### Permissions Grant/Update/Revoke
 
@@ -207,13 +217,6 @@ The following table displays an overview of the functionality for the Nedap Ons 
 <img src="Assets/PermissionsDefenition.png">
 
 _For more information about our HelloID PowerShell connectors, please refer to our general [Documentation](https://docs.helloid.com/hc/en-us/articles/360012558020-How-to-configure-a-custom-PowerShell-target-connector) page_
-
-### Connector Improvements (Todo)
-  * [ ] Use the .net variant to serialize (System.Web.Script.Serialization.JavaScriptSerializer) the $entitlementContext , because this object can be quite large
-  * [ ] Certitficaat Object - in configuration (To supports the cloudagent
-  * [ ] Add PermissionID string to entitlement reference instead of calculate in the grant script
-
-
 
 ## HelloID Docs
 
