@@ -20,28 +20,29 @@
 ## Table of Contents
 * [Introduction](#introduction)
 * [Getting Started](#getting-started)
+* [Connection settings](#Connection-settings)
+* [Prerequisites](#prerequisites)
+* [Remarks](#Remarks)
 * [Provisioning](#provisioning)
-  * [Accounts life Cylce](#accounts-life-cylce)
-    * [Create](#create)
-    * [Update](#update)
-    * [Delete](#delte)
-    * [GetPersmissions](#getpersmissions)
-    * [Grand](#grand)
-    * [Persmissions Grant/Update/Revoke](#Persmissions-Grant/Update/Revoke)
+  * [Create](#create)
+  * [Update](#update)
+  * [Delete](#delte)
+  * [GetPermissions](#getPermissions)
+  * [Grand](#grand)
+  * [Permissions Grant/Update/Revoke](#Permissions-Grant/Update/Revoke)
   * [Supported Properties](Supported-Properties)
 * [Fact Sheet](#Fact-Sheet)
   * [Remote Nedap documentatie](#Remote-Nedap-documentatie)
 * [Setup the connector](Setup-The-Connector)
-* [Connector Improvements (Todo)](#Connector-Improvements-(Todo))
 * [HelloID Docs](#helloid-docs)
 * [Forum Thread](#forum-thread)
 
 
 ## Introduction
-This Repository does only contains the readme. The source code can be found in a private Repositry and is meant only for internal use. Link to Repositry: [Nedap Ons Users](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Users)
+This Repository does only contain the readme. The source code can be found in a private repository and is meant only for internal use. Link to repository: [Nedap Ons Users](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Users)
 
-Nedap Ons provides an REST API to programmatically interact with its services and data.
-The connector manages Nedap account and Provisioning roles. The roles can be assigned as entitlement and the scope of the teams and locations are calculated based on property in the HelloID contracts. To map the property to actual Nedap Teams or Locations an additional mapping is required.
+Nedap Ons provides a REST API to programmatically interact with its services and data.
+The connector manages the Nedap account and Provisioning roles. The roles can be assigned as entitlement and the scope of the teams and locations are calculated based on property in the HelloID contracts. To map the property to actual Nedap Teams or Locations additional mapping is required.
 
 
 ## Getting Started
@@ -53,9 +54,9 @@ The following settings are required to connect to the API.
 | Setting     | Description |
 | ------------ | ----------- |
 | Environment URL API     |    https://api-staging.ons.io                                     |
-| Certificate (.PFX) Path    |  Fullpath to Certificate> Nedap-cert.pfx                       |
+| Certificate (.PFX) Path    |  Full path to Certificate> Nedap-cert.pfx                       |
 | Certificate Password |    Password of the certificate                                       |
-| Mapping File (Locations)|  The Path to the mapping file (HR Location => Nedap Loaction 1:M) |
+| Mapping File (Locations)|  The Path to the mapping file (HR Location => Nedap location 1:M) |
 | Mapping File (Teams)|  The Path to the mapping file (HR Teams =>  Nedap Teams 1:M)          |
 |Directory Cache Locations Teams|  Cache directory for current Nedap Ons locations and current Nedap Ons teams      |
 | CSV separation Character| Mapping File CSV Separation Character         |
@@ -101,7 +102,7 @@ Using this connector you will have the ability to create and manage the followin
 | entitlements.ps1  |  Get Nedap Roles, with 10 options _(See below)_ |
 
 
-#### Create:
+### Create:
 
 * Multiple user accounts for each unique combination (employeeId + contact sequence number), based on the contracts in condition from the Business Rules
 
@@ -111,10 +112,10 @@ Using this connector you will have the ability to create and manage the followin
   *	Audit Logs for each account created.
 
 
-#### Update:
+### Update:
 * Update does not make changes, It's not required
-* Create new user account for each new unique (employeeId + contact sequence number) combination.
-* Delete  Remove account reference from Aref  -*See delete action* -
+* Create a new user account for each new unique (employeeId + contact sequence number) combination.
+* Delete Remove account reference from Aref  -*See delete action* -
 
   Result:
     * Audit Logs for each account (Create, Update, Delete)
@@ -122,16 +123,16 @@ Using this connector you will have the ability to create and manage the followin
     *	The entitlement overview should be the same.
 
 
-#### Delete:
+### Delete:
 *  Remove account reference from AccountReferences
   Result:
     * Remove the Entitlement "Nedap Account"
     *	Remove the Account Reference in HelloID
     *	Audit Logs for each account deleted
 
-#### Permissions
+### Permissions
 *	List Nedap Provisioning Roles (Name + GUID)
-* Entitlement options: *(Please keep only the scopes the cusomter need)*
+* Entitlement options: *(Please keep only the scopes the customer need)*
     * Custom Scope
       * Clients
         * All Clients
@@ -146,13 +147,13 @@ Using this connector you will have the ability to create and manage the followin
     * DefaultScoped
     * RoleScoped
 
-#### Permissions Grant/Update/Revoke
+### Permissions Grant/Update/Revoke
 
 *(Sequenced after Account lifecycle)*
   * Calculate the desired permissions as a sum of the current Permissions/Entitlements plus the new permission and assign all the Nedap roles at once.
 
     Result
-    * Permission for each each entitlement
+    * Permission for each entitlement
     *	Audit Logs for each entitlement with a summary of the Scope (Location and Teams) in the Nedap Role.
     * SubPermissions for each entitlement with an Account and location/team combination
 
@@ -171,14 +172,14 @@ ___________
 ## Fact Sheet
 The following table displays an overview of the functionality for the Nedap Ons connector for HelloID Provisioning and Service Automation.
 
-|Nedap Accounts |Supported by  Nedap    |Supported by  HelloID provisioning |Supported by HelloID Service Automation|
+|Nedap Accounts |Supported by Nedap    |Supported by HelloID provisioning |Supported by HelloID Service Automation|
 | ------------ | ----------- |----------- |----------- |
 | Create Accounts|Yes|Yes|No
 | Update Accounts  |Yes|Yes|No
 | Delete Accounts |Yes|No, not applicable|No
 | Disable Accounts |No|No|No
 | Set initial Password |No|No|No
-| Password Reset |No , *This works only if the account was original created in Nedap. Due to a bug in the API*  |No|No
+| Password Reset |No, *This works only if the account was created in Nedap. Due to a bug in the API*  |No|No
 
 <br/>
 
@@ -189,8 +190,8 @@ The following table displays an overview of the functionality for the Nedap Ons 
 | Assign role with custom scope (aangepast bereik)|Yes |Yes |No
 | Assign role with default scope (standaard bereik)|Yes |Limited, because of missing Nedap feature to manage the default roles|No
 | Assign role with role scope (rol bereik)|Yes |Yes |No
-| Set custom Locations (Clienten) scope in role assignment|Yes|Yes using custom scope, my roster and my planning. *Additional mapping required*|No
-| Set custom Teams (Medewerkers) scope in role assignment|Yes|Yes using custom scope. *Additional mapping required*|No
+| Set custom Locations (Clienten) scope in role assignment|Yes|Yes, using a custom scope, my roster and my planning. *Additional mapping required*|No
+| Set custom Teams (Medewerkers) scope in role assignment|Yes|Yes, using a custom scope. *Additional mapping required*|No
 | Set duration of scope (ValidFrom / ValidTo) |No, *This should be managed in HelloID with business rules*|No|No
 
 
@@ -205,7 +206,7 @@ The following table displays an overview of the functionality for the Nedap Ons 
 * Before using this connector make sure you enter the configuration and replace the following variables.
  <img src="Assets/configuration.png">
 
-* Beside the configuration tab you can also configure in the Grant/Revoke script, the department and the team property. To determine which property from the HelloID contract, the mapping should be looking for a value. This is know as the HR Location or HR Team.
+* Besides the configuration tab you can also configure in the Grant/Revoke script, the department and the team property. To determine which property from the HelloID contract, the mapping should be looking for a value. This is known as the HR Location or HR Team.
 
   ```PowerShell
   $TeamProperty1              = { $_.Department.ExternalId }  # Mandatory
@@ -213,7 +214,7 @@ The following table displays an overview of the functionality for the Nedap Ons 
   $locationProperty1          = { $_.Department.ExternalId }   # Mandatory
   $locationProperty2          = $null # { $_.Title.ExternalId }  # Not used
   $employmentContractFilter   = { $_.Custom.NedapOnsIdentificationNo } #Dienstverband  ```
-* Configure the Persmision definition as follows:
+* Configure the Permission definition as follows:
 <img src="Assets/PermissionsDefenition.png">
 
 _For more information about our HelloID PowerShell connectors, please refer to our general [Documentation](https://docs.helloid.com/hc/en-us/articles/360012558020-How-to-configure-a-custom-PowerShell-target-connector) page_
