@@ -69,7 +69,7 @@ The following settings are required to connect to the API.
 - A valid Nedap Certificate (Tools4ever need to requests a certificate by Nedap to access the API)
 - Mapping between HR departments to Nedap Clients/Locations for determining the scope for the Nedap Provisioning roles
 - Mapping between HR Teams to Nedap Team/Employee for determining the scope for the Nedap Provisioning roles.
-- Determine the scope types that are required for the role assignments. The connector supports default ten scope possibilities. The overview can be overwhelming to the customer in the entitlement overview. This means that there are ten entitlements created per Nedap Role. Please remove the entitlement types which not apply to your needs, by removing the code in the entitlement script.
+- Determine the scope types that are required for the role assignments. The connector supports default **ten scope possibilities**. The overview can be overwhelming to the customer in the entitlement overview. This means that there are ten entitlements created per Nedap Role. Please remove the entitlement types which not apply to your needs, by removing the code in the entitlement script.
 - The HelloID DataStorage must be enabled
 - An custom property on the HelloID contract with a combination of the employeeCode and EmploymentCode named: [custom.NedapOnsIdentificationNo]
 Example:
@@ -129,9 +129,9 @@ Using this connector you will have the ability to create and manage the followin
     *	Remove the Account Reference in HelloID
     *	Audit Logs for each account deleted
 
-#### Get Permissions
-*	Get Nedap Provisioning Roles (Name + GUID)
-  Entitlement options: *(Please keep only the scopes the cusomter need)*
+#### Permissions
+*	List Nedap Provisioning Roles (Name + GUID)
+* Entitlement options: *(Please keep only the scopes the cusomter need)*
     * Custom Scope
       * Clients
         * All Clients
@@ -187,10 +187,10 @@ The following table displays an overview of the functionality for the Nedap Ons 
 | ------------ | ----------- |----------- |----------- |
 | Set a user's DefaultScope (standaard bereik) |Yes|No, because of missing Nedap support for reading current value of default scope|No
 | Assign role with custom scope (aangepast bereik)|Yes |Yes |No
-| Assign role with default scope (standaard bereik)|Yes |No, because of missing Nedap feature to manage the default roles|No
-| Assign role with role assignment scope (rol bereik)|No |No |No
-| Set custom Locations (Clienten) scope in role assignment|Yes|Yes, *Additional mapping required*|No
-| Set custom Teams (Medewerkers) scope in role assignment|Yes|Yes, *Additional mapping required*|No
+| Assign role with default scope (standaard bereik)|Yes |Limited, because of missing Nedap feature to manage the default roles|No
+| Assign role with role scope (rol bereik)|Yes |Yes |No
+| Set custom Locations (Clienten) scope in role assignment|Yes|Yes using custom scope, my roster and my planning. *Additional mapping required*|No
+| Set custom Teams (Medewerkers) scope in role assignment|Yes|Yes using custom scope. *Additional mapping required*|No
 | Set duration of scope (ValidFrom / ValidTo) |No, *This should be managed in HelloID with business rules*|No|No
 
 
