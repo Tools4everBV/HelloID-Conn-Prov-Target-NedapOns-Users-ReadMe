@@ -180,7 +180,7 @@ The following table displays an overview of the functionality for the Nedap Ons 
 | Disable Accounts |No|No|No
 | Set initial Password |No|No|No
 | Password Reset |No, *This works only if the account was created in Nedap. Due to a bug in the API*  |No|No
-
+|Set Dashboard profiel |No|No|No
 <br/>
 
 
