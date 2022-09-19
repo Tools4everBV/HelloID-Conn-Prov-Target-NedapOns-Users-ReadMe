@@ -209,7 +209,7 @@ The following table displays an overview of the functionality for the Nedap Ons 
 
 |Nedap Authorizations |Supported by  Nedap    |Supported by  HelloID provisioning |Supported by HelloID Service Automation|
 | ------------ | ----------- |----------- |----------- |
-| Set a user's DefaultScope (standaard bereik) |Yes| :warning: Yes, We strongly advise you to contact Tools4ever first before using this feature, *Additional mapping required* |No
+| Set a user's DefaultScope (standaard bereik) |Yes| :warning: Yes, We strongly advise you to contact Tools4ever first before using this feature, *Additional mapping required.*  <br> 	:warning: This feature requires an additional endpoint relative to existing implementations! |No
 | Assign role with custom scope (aangepast bereik)|Yes |Yes |No
 | Assign role with default scope (standaard bereik)|Yes |:warning: Yes, We strongly advise you to contact Tools4ever first before using this feature|No
 | Assign role with role scope (rol bereik)|Yes |Yes |No
