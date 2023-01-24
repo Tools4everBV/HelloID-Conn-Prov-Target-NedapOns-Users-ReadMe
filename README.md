@@ -6,10 +6,16 @@
 
 <br />
 
-> :warning: **_Information_**   <br />This connector requires the existence of Nedap Employees inside Nedap Ons. Limited Nedap employee support can be achieved using [this connector](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Employee-Readme).
-<br />Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap employee) are required.
+> :warning: **_Information_**
+> This connector requires the existence of Nedap Employees inside Nedap Ons. Limited Nedap employee support can be achieved using [this connector](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Employee-Readme).
+Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap employee) are required.
 
-<br />
+
+> :warning: **_Information_**
+> It is important to note that the processing order of this connector may work slightly differently from other connectors in the HelloID platform. This is due to the fact that this connector supports multiple accounts per HelloID Person. *(See Remark: [Business Rules Validation Check](#business-rules-validation-check) and [Processing Multiple Accounts](#processing-multiple-accounts)*
+
+
+
 <br />
 
 <p align="center">
@@ -17,40 +23,57 @@
 </p>
 
 ## Versioning
-|  | Description | Date |
-| - | - | - |
-|   | Added Support for managing DefaultScope <br>  Added Resource.ps1 validation script | 2022-06-15 |
-|  | Added Role assigments with role and Default Scope| 2022-03-24 |
-|   | Initial release | 2021-08-27 |
+|     | Description                                                                        | Date       |
+| --- | ----------------------------------------------------------------------------------| ---------- |
+|     | Updated DefaultScope management. Moved DefaultScope to operate as Permissions. <br> *:warning:Might have implications on earlier implementations read: [Permission Displayname](#permission-displayname)* | 2022-12-28 |
+|     | Added Support for managing DefaultScope <br> Added Resource.ps1 validation script | 2022-06-15 |
+|     | Added Role assignments with role and DefaultScope                                  | 2022-03-24 |
+|     | Initial release                                                                    | 2021-08-27 |
+
+> :warning: Upgrade warning!
+> Since the last update on December 28, 2022, the display name for permissions has been changed. This can resolve in empty audit logging for certain actions.[Permission Displayname](#permission-displayname)
+
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
-* [Versioning](#Versioning)
-* [Introduction](#introduction)
-* [Getting Started](#getting-started)
-* [Connection settings](#Connection-settings)
-* [Prerequisites](#prerequisites)
-* [Remarks](#Remarks)
-* [Provisioning](#provisioning)
-  * [Create](#create)
-  * [Update](#update)
-  * [Delete](#delte)
-  * [GetPermissions](#getPermissions)
-  * [Grand](#grand)
-  * [Permissions Grant/Update/Revoke](#Permissions-Grant/Update/Revoke)
-  * [Supported Properties](#Supported-Properties)
-* [Fact Sheet](#Fact-Sheet)
-  * [Remote Nedap documentatie](#Remote-Nedap-documentatie)
-* [Setup the connector](#Setup-The-Connector)
-* [HelloID Docs](#helloid-docs)
-* [Forum Thread](#forum-thread)
+- [HelloID-Conn-Prov-Target-NedapONS-Users-ReadMe](#helloid-conn-prov-target-nedapons-users-readme)
+  - [Versioning](#versioning)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Getting Started](#getting-started)
+    - [Connection settings](#connection-settings)
+    - [Prerequisites](#prerequisites)
+    - [Remarks](#remarks)
+      - [Connector Scope](#connector-scope)
+      - [Datastorage](#datastorage)
+      - [Permission DisplayName](#permission-displayname)
+      - [MappingFiles](#mappingfiles)
+      - [Business Rules Validation Check](#business-rules-validation-check)
+      - [Processing Multiple Accounts](#processing-multiple-accounts)
+    - [Provisioning](#provisioning)
+    - [Create:](#create)
+    - [Update:](#update)
+    - [Delete:](#delete)
+    - [Roles Permissions](#roles-permissions)
+    - [Roles Grant | Update | Revoke](#roles-grant--update--revoke)
+    - [DefaultScope Permissions](#defaultscope-permissions)
+    - [DefaultScope Grant/Update/Revoke](#defaultscope-grantupdaterevoke)
+    - [Supported Properties](#supported-properties)
+  - [Fact Sheet](#fact-sheet)
+    - [Remote Nedap documentation](#remote-nedap-documentation)
+  - [Setup the connector](#setup-the-connector)
+      - [Permissions.ps1  (Roles)](#permissionsps1--roles)
+      - [DefaultScope-Grant.ps1](#defaultscope-grantps1)
+      - [Create.ps1](#createps1)
+      - [Update.ps1](#updateps1)
+  - [HelloID Docs](#helloid-docs)
+  - [Forum Thread](#forum-thread)
 
 
 ## Introduction
-This Repository does only contain the readme. The source code can be found in a private repository and is meant only for internal use. Link to repository: [Nedap Ons Users](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Users)
+This Repository does only contain the README. The source code can be found in a private repository and is meant only for internal use. Link to the repository: [Nedap Ons Users](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Users)
 
-Nedap Ons provides a REST API to programmatically interact with its services and data.
-The connector manages the Nedap account and Provisioning roles. The roles can be assigned as entitlement and the scope of the teams and locations are calculated based on property in the HelloID contracts. To map the property to actual Nedap Teams or Locations additional mapping is required.
+Nedap Ons provides a REST API to programmatically interact with its services and data. The connector manages the Nedap accounts, DefaultScope and Provisioning roles. The roles and the Defaultscope can be assigned as entitlement and the scope of the teams and locations are calculated based on a specified property in the HelloID contracts. To map the property to the actual Nedap Team or Location additional mapping is required.
 
 
 ## Getting Started
@@ -59,25 +82,32 @@ The connector manages the Nedap account and Provisioning roles. The roles can be
 
 The following settings are required to connect to the API.
 
-| Setting     | Description |
-| ------------ | ----------- |
-| Environment URL API     |    https://api-staging.ons.io                                     |
-| Certificate (.PFX) Path    |  Full path to Certificate> Nedap-cert.pfx                       |
-| Certificate Password |    Password of the certificate                                       |
-| Mapping File (Locations)|  The Path to the mapping file (HR Location => Nedap location 1:M) *Example can be found in the asset folder* |
-| Mapping File (Teams)|  The Path to the mapping file (HR Teams =>  Nedap Teams 1:M)  *Example can be found in the asset folder*     |
-| Directory Cache Locations Teams|  Cache directory for current Nedap Ons locations and current Nedap Ons teams      |
-| CSV Delimiter| Mapping File CSV Separation Character         |
-| Validate Team and Location|  Enable validation of mapped locations and teams       |
+| Setting                         | Description                                                                                                 |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Environment URL API             | https://api-staging.ons.io                                                                                  |
+| Certificate (.PFX) Path         | Full path to Certificate> Nedap-cert.pfx                                                                    |
+| Certificate Password            | Password of the certificate                                                                                 |
+| Mapping File (Locations)        | The Path to the mapping file (HR Location => Nedap location 1:M) *Example can be found in the asset folder* |
+| Mapping File (Teams)            | The Path to the mapping file (HR Teams =>  Nedap Teams 1:M)  *Example can be found in the asset folder*     |
+| Directory Cache Locations Teams | Cache directory for current Nedap Ons locations and current Nedap Ons teams                                 |
+| CSV Delimiter                   | Mapping File CSV Separation Character                                                                       |
+| Validate Team and Location      | Enable validation of mapped locations and teams                                                             |
+
 
 ### Prerequisites
 
 - Direct HR employees synchronization with Nedap to manage the employees in Nedap
-- A valid Nedap Certificate (Tools4ever need to requests a certificate by Nedap to access the API)
-- Mapping between HR departments to Nedap Clients/Locations for determining the scope for the Nedap Provisioning roles and the possible DefaultScope.
-- Mapping between HR Teams to Nedap Team/Employee for determining the scope for the Nedap Provisioning roles and the possible DefaultScope.
-- Determine the scope types that are required for the role assignments. The connector supports default **ten scope possibilities**. The overview can be overwhelming to the customer in the entitlement overview. This means that there are ten entitlements created per Nedap Role. Please remove the entitlement types which not apply to your needs, by removing the code in the entitlement script.
+ <br>
+- A valid Nedap Certificate (Tools4ever needs to request a certificate by Nedap to access the API)
+ <br>
+- Mapping between HR departments to Nedap Clients/Locations for determining the scope for the Nedap Provisioning roles and possibly for the DefaultScope.
+ <br>
+- Mapping between HR Teams to Nedap Team/Employee for determining the scope for the Nedap Provisioning roles and possibly for the DefaultScope.
+ <br>
+- Determine the scope **Types** that are required for the role assignments. The connector supports default **ten scope possibilities**. The overview can be overwhelming to the customer in the entitlement overview. This means that there are ten entitlements created per Nedap Role. Please remove the entitlement types which not apply to your needs, by removing the code in the entitlement script.
+<br>
 - The HelloID DataStorage must be enabled
+<br>
 - An custom property on the HelloID contract with a combination of the employeeCode and EmploymentCode named: [custom.NedapOnsIdentificationNo]
 Example:
   ```javascript
@@ -90,69 +120,84 @@ Example:
 
 ### Remarks
 
- - This connector does only manages the users and the authorizations. And is intended to be used along with a direct sync HR. AFAS for example. So the Employee objects are not managed in this connector. The connector depends on this sync. When an employee object is not found the user cannot be created.
- - The connector uses DataStorage to keep track of the current permissions. The DataStorage is behind a feature flag so must be enabled before it can be used in your tenant.
- - Please be careful when changing/adding the permission types. Removing a permission type is not a problem, but adding them (again) might encounter unexpected behavior. The displayname of the permissions are cached in HelloID, and they only refresh after reaching a certain time limit. This cache means that the displayname of the permissions aren't directly saved in HelloID, and likewise not in the PowerShell scripts. The Permissions script relies on the PermissionsDisplayname and cannot process the permissions without the displayname. The entitlements are shown in the entitlement HelloID overview, but cannot be used until the names are properly cached.
- - Also, be careful when enabling to manage the default scope of a User. Because Nedap does not support a get or a patch method to update the default scope of a user. So the scope which is specified in HelloID will overwrite any current default scope of the existing user. And any manual adjustment will be overwritten as soon a update action taken place.
-- The mapping files are used for both the role assignments in the permission script and the Default scope. Supposing the mapping applied between HR en Nedap is the same. Although for the Default scope extra columns are added AllEmployee and AllClients.
-These columns are ignored in the role assignments. The All options for the role assignments are managed with separated entitlements.
+#### Connector Scope
+  This connector does only manage the users and the authorizations. And is intended to be used along with a direct sync HR. AFAS for example. So the Employee objects are not managed in this connector. The connector depends on this sync. When an employee object is not found the user cannot be created.
 
+#### Datastorage
+  The connector uses DataStorage to keep track of the current permissions (Provisioning Roles). The DataStorage is behind a feature flag so must be enabled before it can be used in your tenant.
+
+#### Permission DisplayName
+ The display name of the permissions in HelloID are cached, and they only refresh after a specific time limit has been reached. As a result, the display name of the permissions is not directly saved in HelloID and therefore, not in the PowerShell scripts.
+Previous versions of the system, prior to December 28, 2022, relied on this display name. However, this dependency has been removed. Unfortunately, previously granted permissions will not be automatically corrected with the new display name and will continue to rely on the old display name. To avoid any issues caused by this, you can implement the following code as a temporary fix until all the granted permissions are re-granted.
+  ```Powershell
+  if ('DisplayName' -notin $pRef.PSObject.Properties.name  ) {
+      if ($eRef.PermissionDisplayName -ne '<unknown permission>') {
+          $pRef | Add-Member -NotePropertyMembers @{
+              DisplayName = "$($eRef.PermissionDisplayName.Split('-')[1].trim(' '))"
+          }
+      }
+  }
+  ```
+<br>
+
+
+#### MappingFiles
+  The mapping files are used for both the role assignments and the Default scope in the permission scripts. It is assumed that applied between HR en Nedap is the same. Although for the Defaultscope extra columns are added AllEmployees and AllClients. These columns are ignored in the role assignments. The 'All' options for the role assignments are managed with separate entitlements.
+
+#### Business Rules Validation Check
+
+In certain situations, it may occur that an employment with the reference number 1000467-1 has an account entitlement, while another employment with the reference number 1000467-2 has been granted permissions for the Defaultscope or Provisioning Role. This lead to a mismatch between the account reference and the contracts in scope. This mismatch is a result of an incorrect configuration of the Business Rules. The connector checks for this mismatch and will generate a "warning" audit log, but the connector will still complete successfully without processing the permission. And if the Account Reference was removed the permissions will be removed from Nedap. It is important to ensure that by granting permissions to specific employment, they also have an associated account entitlement.
+
+#### Processing Multiple Accounts
+
+Due to the support for multiple accounts within Nedap, the Update task may result in the removal of an account. This scenario presents a problem, as the default process order for revoking a trigger is to first revoke the permissions and then revoke the account entitlement. As a result, permissions are revoked before the account entitlement is outside of scope. This process is described in the HelloID documentation. However, in our particular scenario, the process operates differently. The update task first removes the account, resulting in the process order being reversed, with the account revocation occurring before the permission is revoked. This difference in process order leads to the removed account reference not appearing in the permission task, making it impossible to remove the associated permissions. The permission script subsequently performs a cleanup process to revoke the permissions of the previously removed accounts during the next run. However, this is not a straightforward process and will only be triggered during the next specific permission update or when manually prompted to update the permissions.
 
 ### Provisioning
 Using this connector you will have the ability to create and manage the following items in Nedap:
 
 
-| Files       | Description                                             |
-| ----------- | ------------------------------------------              |
-| Create.ps1  | Creates or Correlates the user in the target system <br> Set / Set and Update the DefaultScope  |
-| Update.ps1  | Creates, update or deletes Account references <br> Set / Set and Update and remove the DefaultScope        |
-| Delete.ps1  |  Removes account reference(s)    _(Success = True)_  <br> Removes the DefaultScope    |
-| Permission.ps1 | Grant/Update/Revoke Nedap Roles                      |
-| Entitlements.ps1  |  Get Nedap Roles, with 10 options _(See below)_ |
-| Resource.ps1  | Create validation files to check against the given Nedap location an team Ids in the mapping files |
+| Files                   | Description                                                                                       |
+| ----------------------- | ------------------------------------------------------------------------------------------------- |
+| Create.ps1              | Creates or Correlates the user in the target system                                               |
+| Update.ps1              | Creates, update or deletes Account references                                                     |
+| Delete.ps1              | Removes account reference(s)  _(Success = True)_                                                  |
+| Permission.ps1          | Grant/Update/Revoke Nedap Provisioning Roles                                                      |
+| Entitlements.ps1        | Get Nedap Roles, with 10 options _(See below)_                                                    |
+| DefaultScope            | No script required, Create static permission named DefaultScope                                   |
+| DefaultScope Grant.ps1  | Grant/Set Defaultscope calculated based on external Mapping                                       |
+| DefaultScope Revoke.ps1 | Revoke Defaultscope                                                                               |
+| Resource.ps1            | Create validation files to check against the given Nedap location a team Ids in the mapping files |
 
 
 ### Create:
 
-* Multiple user accounts for each unique combination (employeeId + contact sequence number), based on the contracts in condition from the Business Rules
-* DefaultScope
-  * Set and Update defaultScope foreach account
-
+* Multiple users accounts for each unique combination (employeeId + contact sequence number), based on the contracts in condition from the Business Rules
+*
   Result:
   * One entitlement “Nedap Account”
-  * A list of account references that can be used in the account lifecycle.
+  * A list of account references that can be used throughout the account lifecycle.
   *	Audit Logs for each account created.
-  * Audit Logs for each DefaultScope what is applied
-
-
 
 
 ### Update:
-* Update does not make changes, It's not required
+* Update does not make changes to an account, It's not required
 * Create a new user account for each new unique (employeeId + contact sequence number) combination.
-* Delete Remove account reference from Aref  -*See delete action* -
-* DefaultScope
-  * Set defaultScope with a new account
-  * Update the defaultScope on exisint accounts
-  * Remove the defaultScope with a account deletion
+* Delete Remove account reference from Aref -*See delete action* -
 
   Result:
     * Audit Logs for each account (Create, Update, Delete)
     *	Update the account reference with the new situation.
-    * Audit Logs for each DefaultScope what is applied
     *	The entitlement overview should be the same.
 
 
 ### Delete:
-*  Remove account reference from AccountReferences
-*  Remove the defaultScope
+*  Remove (all) account references
   Result:
     * Remove the Entitlement "Nedap Account"
     *	Remove the Account Reference in HelloID
     *	Audit Logs for each account deleted
-    * Audit Logs for each DefaultScope what is removed
 
-### Permissions
+### Roles Permissions
 *	List Nedap Provisioning Roles (Name + GUID)
 * Entitlement options: *(Please keep only the scopes the customer need)*
     * Custom Scope
@@ -161,32 +206,52 @@ Using this connector you will have the ability to create and manage the followin
         * Clients on my Roster
         * Clients on my Planning
         * No Clients
-        * Calculated Clients based on Contracts (External Mapping is needed)
+        * Calculated Clients based on Contracts (External Mapping required)
       * Teams
         * All Teams
         * No Teams
-        * Calculated Teams based on Contracts (External Mapping is needed)
+        * Calculated Teams based on Contracts (External Mapping required)
     * DefaultScoped
     * RoleScoped
 
-### Permissions Grant/Update/Revoke
-
+### Roles Grant | Update | Revoke
+All in One Script
 *(Sequenced after Account lifecycle)*
+
   * Calculate the desired permissions as a sum of the current Permissions/Entitlements plus the new permission and assign all the Nedap roles at once.
 
     Result
     * Permission for each entitlement
-    *	Audit Logs for each entitlement with a summary of the Scope (Location and Teams) in the Nedap Role.
+    *	Audit Logs for each entitlement with a summary of the Scope (Location and Teams) of the Nedap Role.
     * SubPermissions for each entitlement with an Account and location/team combination
 
 
+### DefaultScope Permissions
+ - No script required, just a static value something like: 'DefaultScope'
+
+### DefaultScope Grant/Update/Revoke
+Separate Scripts
+*(Sequenced after Account lifecycle)*
+
+-  The DefaultScope can now be set scoped in Nedap therefore the defaultscope can be set as permission in HelloID. The scope of an Account will be calculated based on the contracts in Scope against an external mapping file. An example of such mapping file can be found in the Assets folder.
+  Result:
+     - Grant
+       - For each account two Audit Logs with a summary of the DefaultScope applied, Location and Teams are separated Logs.
+       - SubPermissions: For each account a set of the applied DefaultScope.
+     - Update
+       - For each account two Audit Logs with a summary of the DefaultScope applied, Location and Teams are separated Logs.
+       - SubPermissions: For each account a set of the applied DefaultScope.
+     - Revoke
+       - Audit logs for each account reference.
+
+
 ### Supported Properties
-| PropertyName | Notes |
-| ------------ | ------------|
-| ContractRequiredAtLogin |  |
-| SsoEnabled |  |
-| PasswordChange |  |
-| UserName | Mapped as employee number + Employment Sequence Number|
+| PropertyName            | Notes                                                  |
+| ----------------------- | ------------------------------------------------------ |
+| ContractRequiredAtLogin |                                                        |
+| SsoEnabled              |                                                        |
+| PasswordChange          |                                                        |
+| UserName                | Mapped as employee number + Employment Sequence Number |
 
 
 
@@ -207,16 +272,15 @@ The following table displays an overview of the functionality for the Nedap Ons 
 <br/>
 
 
-|Nedap Authorizations |Supported by  Nedap    |Supported by  HelloID provisioning |Supported by HelloID Service Automation|
-| ------------ | ----------- |----------- |----------- |
-| Set a user's DefaultScope (standaard bereik) |Yes| :warning: Yes, We strongly advise you to contact Tools4ever first before using this feature, *Additional mapping required.*  <br> 	:warning: This feature requires an additional endpoint relative to existing implementations! |No
-| Assign role with custom scope (aangepast bereik)|Yes |Yes |No
-| Assign role with default scope (standaard bereik)|Yes |:warning: Yes, We strongly advise you to contact Tools4ever first before using this feature|No
-| Assign role with role scope (rol bereik)|Yes |Yes |No
-| Set custom Locations (Clienten) scope in role assignment|Yes|Yes, using a custom scope, my roster and my planning. *Additional mapping required*|No
-| Set custom Teams (Medewerkers) scope in role assignment|Yes|Yes, using a custom scope. *Additional mapping required*|No
-| Set duration of scope (ValidFrom / ValidTo) |No, *This should be managed in HelloID with business rules*|No|No
-
+| Nedap Authorizations                                     | Supported by  Nedap                                         | Supported by  HelloID provisioning                                                                                                                                                                                              | Supported by HelloID Service Automation |
+| -------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------ | --------------------------------------- |
+| Set a user's DefaultScope (standaard bereik)             | Yes                                                         | :warning: Yes, We strongly advise you to contact Tools4ever first before using this feature, *Additional mapping required.*  <br> 	:warning: This feature requires an additional endpoint relative to existing implementations! | No                                      |
+| Assign role with custom scope (aangepast bereik)         | Yes                                                         | Yes                                                                                                                                                                                                                             | No                                      |
+| Assign role with default scope (standaard bereik)        | Yes       | :warning: Yes, We strongly advise you to contact Tools4ever first before using this feature                                                                                   | No                                      |
+| Assign role with role scope (rol bereik)                 | Yes       | Yes                                                                                                                                                                           | No                                      |
+| Set custom Locations (Clienten) scope in role assignment | Yes                                                         | Yes, using a custom scope, my roster and my planning. *Additional mapping required*                                                                                                                                             | No                                      |
+| Set custom Teams (Medewerkers) scope in role assignment  | Yes                                                         | Yes, using a custom scope. *Additional mapping required*                                                                                                                                                                        | No                                      |
+| Set duration of scope (ValidFrom / ValidTo)              | No, *This should be managed in HelloID with business rules* | No                                                                                                                                                                                                                              | No                                      |
 
 
 ### Remote Nedap documentation
@@ -229,9 +293,9 @@ The following table displays an overview of the functionality for the Nedap Ons 
 * Before using this connector make sure you enter the configuration and replace the following variables.
  <img src="Assets/configuration.png">
 
-* Besides the configuration tab, you can also configure script variables. To decide which property from a HelloID contract is used to look up a value in the mapping table, this is known as the HR Location or HR Team. And you can configure the Defaultscope behavior. Please note that some "same" configuration must taken place in multiple scripts. Shown as below:
+* Besides the configuration tab, you can also configure script variables. To decide which property from a HelloID contract is used to look up a value in the mapping table, this is known as the HR Location or HR Team. And you can configure the Defaultscope behavior. Please note that some "same" configuration must be taken place in multiple scripts. Shown as below:
 
-#### Permissions.ps1
+#### Permissions.ps1  (Roles)
 
   ```PowerShell
   $TeamProperty1              = { $_.Department.ExternalId }  # Mandatory
@@ -240,59 +304,45 @@ The following table displays an overview of the functionality for the Nedap Ons 
   $locationProperty2          = $null # { $_.Title.ExternalId }  # Not used
   $employmentContractFilter   = { $_.Custom.NedapOnsIdentificationNo } #Dienstverband
   ```
+#### DefaultScope-Grant.ps1
+
+  ```PowerShell
+  #lookup Value of the person object
+  $teamLookupField1 = { $_.Department.ExternalId }                       # Mandatory
+  $teamLookupField2 = { $_.Title.ExternalId }                            # Not mandatory
+  $locationLookupField1 = { $_.Department.ExternalId }                   # Mandatory
+  $locationLookupField2 = { $_.Title.ExternalId }                        # Not mandatory
+  $employmentContractFilter = { $_.Custom.NedapOnsIdentificationNo }  # Dienstverband
+  ```
+
 #### Create.ps1
 
   ```PowerShell
-$teamLookupField1             = { $_.Department.ExternalId } # Mandatory
-$teamLookupField2             = { $_.Title.ExternalId } # Not mandatory
-$locationLookupField1         = { $_.Department.ExternalId } # Mandatory
-$locationLookupField2         = $null  # { $_.Title.ExternalId }  # Not used
 $employmentContractFilter     = { $_.Custom.NedapOnsIdentificationNo }  # Dienstverband
-
- # Set to true if accounts in the target system must be updated
-$updatePerson = $true
-
- # DefaultScope
-    # 'Dont'      # Dont apply
-    # 'Once'      # Apply once on new account creation
-    # 'Manage'    # Manage DefaultScope, Apply on new and existing accounts
-$applyDefaultScope = 'Dont
   ```
 
 #### Update.ps1
 
   ```PowerShell
-$teamLookupField1             = { $_.Department.ExternalId } # Mandatory
-$teamLookupField2             = { $_.Title.ExternalId } # Not mandatory
-$locationLookupField1         = { $_.Department.ExternalId } # Mandatory
-$locationLookupField2         = $null  # { $_.Title.ExternalId }  # Not used
+
 $employmentContractFilter     = { $_.Custom.NedapOnsIdentificationNo }  # Dienstverband
- # DefaultScope
-    # 'Dont'      # Dont apply
-    # 'Once'      # Apply once on new account creation
-    # 'Manage'    # Manage DefaultScope, Apply on new and existing accounts
-$applyDefaultScope = 'Dont'
-
- # Clear the Defaultscope with an account deletion.
-    # $false       # Remove the DefaultScope
-    # $true        # Do not remove the DefaultScope
-$removeDefaultScope = $false
-
-  ```
-
-#### Delete.ps1
-
-  ```PowerShell
- # Clear the Defaultscope with an account deletion.
-    # $false       # Remove the DefaultScope
-    # $true        # Do not remove the DefaultScope
-$removeDefaultScope = $false
   ```
 
 
 
-* Configure the Permission definition as follows:
-<img src="Assets/PermissionsDefenition.png">
+
+
+* Configure the Permission definition (Provisioning Roles) as follows:
+<img src="Assets/PermissionsDefinition.png">
+
+* Configure the Permission definition (DefaultScope) as follows:
+<img src="Assets/DefaultScopePermissionDefinition.png">
+
+<br>
+
+ - With one static Permission, DefaultScope:
+  <img src="Assets/DefaultScopeStatic.png">
+
 
 _For more information about our HelloID PowerShell connectors, please refer to our general [Documentation](https://docs.helloid.com/hc/en-us/articles/360012558020-How-to-configure-a-custom-PowerShell-target-connector) page_
 
@@ -302,3 +352,6 @@ The official HelloID documentation can be found at: https://docs.helloid.com/
 
 ## Forum Thread
 The Forum thread for any questions or remarks regarding this connector can be found at: [Helloid-prov-target-nedap-ons-users](https://forum.helloid.com/forum/helloid-connectors/provisioning/313-helloid-prov-target-nedap-ons-users)
+
+
+
