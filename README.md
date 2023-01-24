@@ -97,17 +97,14 @@ The following settings are required to connect to the API.
 ### Prerequisites
 
 - Direct HR employees synchronization with Nedap to manage the employees in Nedap
- <br>
 - A valid Nedap Certificate (Tools4ever needs to request a certificate by Nedap to access the API)
- <br>
-- Mapping between HR departments to Nedap Clients/Locations for determining the scope for the Nedap Provisioning roles and possibly for the DefaultScope.
- <br>
+ - Mapping between HR departments to Nedap Clients/Locations for determining the scope for the Nedap Provisioning roles and possibly for the DefaultScope.
+ 
 - Mapping between HR Teams to Nedap Team/Employee for determining the scope for the Nedap Provisioning roles and possibly for the DefaultScope.
- <br>
-- Determine the scope **Types** that are required for the role assignments. The connector supports default **ten scope possibilities**. The overview can be overwhelming to the customer in the entitlement overview. This means that there are ten entitlements created per Nedap Role. Please remove the entitlement types which not apply to your needs, by removing the code in the entitlement script.
-<br>
+ - Determine the scope **Types** that are required for the role assignments. The connector supports default **ten scope possibilities**. The overview can be overwhelming to the customer in the entitlement overview. This means that there are ten entitlements created per Nedap Role. Please remove the entitlement types which not apply to your needs, by removing the code in the entitlement script.
+
 - The HelloID DataStorage must be enabled
-<br>
+
 - An custom property on the HelloID contract with a combination of the employeeCode and EmploymentCode named: [custom.NedapOnsIdentificationNo]
 Example:
   ```javascript
@@ -151,6 +148,8 @@ In certain situations, it may occur that an employment with the reference number
 #### Processing Multiple Accounts
 
 Due to the support for multiple accounts within Nedap, the Update task may result in the removal of an account. This scenario presents a problem, as the default process order for revoking a trigger is to first revoke the permissions and then revoke the account entitlement. As a result, permissions are revoked before the account entitlement is outside of scope. This process is described in the HelloID documentation. However, in our particular scenario, the process operates differently. The update task first removes the account, resulting in the process order being reversed, with the account revocation occurring before the permission is revoked. This difference in process order leads to the removed account reference not appearing in the permission task, making it impossible to remove the associated permissions. The permission script subsequently performs a cleanup process to revoke the permissions of the previously removed accounts during the next run. However, this is not a straightforward process and will only be triggered during the next specific permission update or when manually prompted to update the permissions.
+
+> :bulb: Tip: To get a closing solution, you can specify the account and permission entitlements in different business rules. And configure that the permission entitlement will be out of scope one day before the account entitlement with an off- or reboarding. To avoid out-of-sync permissions.
 
 ### Provisioning
 Using this connector you will have the ability to create and manage the following items in Nedap:
