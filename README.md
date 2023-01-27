@@ -12,7 +12,7 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
 
 
 > :warning: **_Information_**
-> It is important to note that the processing order of this connector may work slightly differently from other connectors in the HelloID platform. This is due to the fact that this connector supports multiple accounts per HelloID Person. *(See Remark: [Business Rules Validation Check](#business-rules-validation-check) and [Processing Multiple Accounts](#processing-multiple-accounts)*
+> It is important to note that the processing order of this connector may work slightly differently from other connectors in the HelloID platform. This is because this connector supports multiple accounts per HelloID Person. *(See Remark: [Business Rules Validation Check](#business-rules-validation-check) and [Processing Multiple Accounts](#processing-multiple-accounts)*
 
 
 
@@ -73,7 +73,7 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
 ## Introduction
 This Repository does only contain the README. The source code can be found in a private repository and is meant only for internal use. Link to the repository: [Nedap Ons Users](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Users)
 
-Nedap Ons provides a REST API to programmatically interact with its services and data. The connector manages the Nedap accounts, DefaultScope and Provisioning roles. The roles and the Defaultscope can be assigned as entitlement and the scope of the teams and locations are calculated based on a specified property in the HelloID contracts. To map the property to the actual Nedap Team or Location additional mapping is required.
+Nedap Ons provides a REST API to programmatically interact with its services and data. The connector manages the Nedap accounts, DefaultScope, and Provisioning roles. The roles and the Defaultscope can be assigned as entitlement and the scope of the teams and locations are calculated based on a specified property in the HelloID contracts. To map the property to the actual Nedap Team or Location additional mapping is required.
 
 
 ## Getting Started
@@ -105,7 +105,7 @@ The following settings are required to connect to the API.
 
 - The HelloID DataStorage must be enabled
 
-- An custom property on the HelloID contract with a combination of the employeeCode and EmploymentCode named: [custom.NedapOnsIdentificationNo]
+- A custom property on the HelloID contract with a combination of the employeeCode and EmploymentCode named: [custom.NedapOnsIdentificationNo]
 Example:
   ```javascript
   function getValue() {
@@ -124,8 +124,7 @@ Example:
   The connector uses DataStorage to keep track of the current permissions (Provisioning Roles). The DataStorage is behind a feature flag so must be enabled before it can be used in your tenant.
 
 #### Permission DisplayName
- The display name of the permissions in HelloID are cached, and they only refresh after a specific time limit has been reached. As a result, the display name of the permissions is not directly saved in HelloID and therefore, not in the PowerShell scripts.
-Previous versions of the system, prior to December 28, 2022, relied on this display name. However, this dependency has been removed. Unfortunately, previously granted permissions will not be automatically corrected with the new display name and will continue to rely on the old display name. To avoid any issues caused by this, you can implement the following code as a temporary fix until all the granted permissions are re-granted.
+ The display name of the permissions in HelloID are cached, and they only refresh after a specific time limit has been reached. As a result, the display name of the permissions is not directly saved in HelloID and therefore, not in the PowerShell scripts. Previous versions of the system, before December 28, 2022, relied on this display name. However, this dependency has been removed. Unfortunately, previously granted permissions will not be automatically corrected with the new display name and will continue to rely on the old display name. To avoid any issues caused by this, you can implement the following code as a temporary fix until all the granted permissions are re-granted.
   ```Powershell
   if ('DisplayName' -notin $pRef.PSObject.Properties.name  ) {
       if ($eRef.PermissionDisplayName -ne '<unknown permission>') {
@@ -139,17 +138,17 @@ Previous versions of the system, prior to December 28, 2022, relied on this disp
 
 
 #### MappingFiles
-  The mapping files are used for both the role assignments and the Default scope in the permission scripts. It is assumed that applied between HR en Nedap is the same. Although for the Defaultscope extra columns are added AllEmployees and AllClients. These columns are ignored in the role assignments. The 'All' options for the role assignments are managed with separate entitlements.
+  The mapping files are used for both the role assignments and the Default scope in the permission scripts. It is assumed that the application between HR en Nedap is the same. Although for the Defaultscope extra columns are added AllEmployees and AllClients. These columns are ignored in the role assignments. The 'All' options for the role assignments are managed with separate entitlements.
 
 #### Business Rules Validation Check
 
-In certain situations, it may occur that an employment with the reference number 1000467-1 has an account entitlement, while another employment with the reference number 1000467-2 has been granted permissions for the Defaultscope or Provisioning Role. This lead to a mismatch between the account reference and the contracts in scope. This mismatch is a result of an incorrect configuration of the Business Rules. The connector checks for this mismatch and will generate a "warning" audit log, but the connector will still complete successfully without processing the permission. And if the Account Reference was removed the permissions will be removed from Nedap. It is important to ensure that by granting permissions to specific employment, they also have an associated account entitlement.
+In certain situations, an employment with the reference number 1000467-1 may have an account entitlement, while another employment with the reference number 1000467-2 has been granted permissions for the Defaultscope or Provisioning Role. This leads to a mismatch between the account reference and the contracts in scope. This mismatch is a result of an incorrect configuration of the Business Rules. The connector checks for this mismatch and will generate a "warning" audit log, but the connector will still complete successfully without processing the permission. And if the Account Reference was removed the permissions will be removed from Nedap. It is important to ensure that by granting permissions to specific employment, they also have an associated account entitlement.
 
 #### Processing Multiple Accounts
 
 Due to the support for multiple accounts within Nedap, the Update task may result in the removal of an account. This scenario presents a problem, as the default process order for revoking a trigger is to first revoke the permissions and then revoke the account entitlement. As a result, permissions are revoked before the account entitlement is outside of scope. This process is described in the HelloID documentation. However, in our particular scenario, the process operates differently. The update task first removes the account, resulting in the process order being reversed, with the account revocation occurring before the permission is revoked. This difference in process order leads to the removed account reference not appearing in the permission task, making it impossible to remove the associated permissions. The permission script subsequently performs a cleanup process to revoke the permissions of the previously removed accounts during the next run. However, this is not a straightforward process and will only be triggered during the next specific permission update or when manually prompted to update the permissions.
 
-> :bulb: Tip: To get a closing solution, you can specify the account and permission entitlements in distinct business rules. Additionally, it is suggested to configure the permission entitlement to be out of scope prior to the account entitlement during off-boarding or re-boarding procedures.. To prevent out-of-sync permissions.
+> :bulb: Tip: To get a closing solution, you can specify the account and permission entitlements in distinct business rules. Additionally, it is suggested to configure the permission entitlement to be out of scope before the account entitlement during off-boarding or re-boarding procedures... To prevent out-of-sync permissions.
 
 ### Provisioning
 Using this connector you will have the ability to create and manage the following items in Nedap:
@@ -158,11 +157,11 @@ Using this connector you will have the ability to create and manage the followin
 | Files                   | Description                                                                                       |
 | ----------------------- | ------------------------------------------------------------------------------------------------- |
 | Create.ps1              | Creates or Correlates the user in the target system                                               |
-| Update.ps1              | Creates, update or deletes Account references                                                     |
+| Update.ps1              | Creates, updates, or deletes Account references                                                     |
 | Delete.ps1              | Removes account reference(s)  _(Success = True)_                                                  |
 | Permission.ps1          | Grant/Update/Revoke Nedap Provisioning Roles                                                      |
 | Entitlements.ps1        | Get Nedap Roles, with 10 options _(See below)_                                                    |
-| DefaultScope            | No script required, Create static permission named DefaultScope                                   |
+| DefaultScope            | No script is required, Create static permission named DefaultScope                                   |
 | DefaultScope Grant.ps1  | Grant/Set Defaultscope calculated based on external Mapping                                       |
 | DefaultScope Revoke.ps1 | Revoke Defaultscope                                                                               |
 | Resource.ps1            | Create validation files to check against the given Nedap location a team Ids in the mapping files |
@@ -170,7 +169,7 @@ Using this connector you will have the ability to create and manage the followin
 
 ### Create:
 
-* Multiple users accounts for each unique combination (employeeId + contact sequence number), based on the contracts in condition from the Business Rules
+* Multiple user accounts for each unique combination (employeeId + contact sequence number), based on the contracts in condition from the Business Rules
 *
   Result:
   * One entitlement “Nedap Account”
@@ -179,7 +178,7 @@ Using this connector you will have the ability to create and manage the followin
 
 
 ### Update:
-* Update does not make changes to an account, It's not required
+* The update script does not make changes to an account, it's not required.
 * Create a new user account for each new unique (employeeId + contact sequence number) combination.
 * Delete Remove account reference from Aref -*See delete action* -
 
@@ -226,11 +225,11 @@ All in One Script
 
 
 ### DefaultScope Permissions
- - No script required, just a static value something like: 'DefaultScope'
+ - No script is required, just a static value something like: 'DefaultScope'
 
 ### DefaultScope Grant/Update/Revoke
 Separate Scripts
-*(Sequenced after Account lifecycle)*
+*(Sequenced after the Account lifecycle)*
 
 -  The DefaultScope can now be set scoped in Nedap therefore the defaultscope can be set as permission in HelloID. The scope of an Account will be calculated based on the contracts in Scope against an external mapping file. An example of such mapping file can be found in the Assets folder.
   Result:
@@ -257,7 +256,7 @@ Separate Scripts
 ___________
 
 ## Fact Sheet
-The following table displays an overview of the functionality for the Nedap Ons connector for HelloID Provisioning and Service Automation.
+The following table displays an overview of the functionality of the Nedap Ons connector for HelloID Provisioning and Service Automation.
 
 |Nedap Accounts |Supported by Nedap    |Supported by HelloID provisioning |Supported by HelloID Service Automation|
 | ------------ | ----------- |----------- |----------- |
@@ -273,11 +272,11 @@ The following table displays an overview of the functionality for the Nedap Ons 
 
 | Nedap Authorizations                                     | Supported by  Nedap                                         | Supported by  HelloID provisioning                                                                                                                                                                                              | Supported by HelloID Service Automation |
 | -------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------ | --------------------------------------- |
-| Set a user's DefaultScope (standaard bereik)             | Yes                                                         | :warning: Yes, We strongly advise you to contact Tools4ever first before using this feature, *Additional mapping required.*  <br> 	:warning: This feature requires an additional endpoint relative to existing implementations! | No                                      |
+| Set a user's DefaultScope (standaard bereik)             | Yes                                                         | :warning: Yes, We strongly advise you to contact Tools4ever first before using this feature, *Additional mapping is required.*  <br> 	:warning: This feature requires an additional endpoint relative to existing implementations! | No                                      |
 | Assign role with custom scope (aangepast bereik)         | Yes                                                         | Yes                                                                                                                                                                                                                             | No                                      |
 | Assign role with default scope (standaard bereik)        | Yes       | :warning: Yes, We strongly advise you to contact Tools4ever first before using this feature                                                                                   | No                                      |
 | Assign role with role scope (rol bereik)                 | Yes       | Yes                                                                                                                                                                           | No                                      |
-| Set custom Locations (Clienten) scope in role assignment | Yes                                                         | Yes, using a custom scope, my roster and my planning. *Additional mapping required*                                                                                                                                             | No                                      |
+| Set custom Locations (Clienten) scope in role assignment | Yes                                                         | Yes, using a custom scope, my roster, and my planning. *Additional mapping required*                                                                                                                                             | No                                      |
 | Set custom Teams (Medewerkers) scope in role assignment  | Yes                                                         | Yes, using a custom scope. *Additional mapping required*                                                                                                                                                                        | No                                      |
 | Set duration of scope (ValidFrom / ValidTo)              | No, *This should be managed in HelloID with business rules* | No                                                                                                                                                                                                                              | No                                      |
 
