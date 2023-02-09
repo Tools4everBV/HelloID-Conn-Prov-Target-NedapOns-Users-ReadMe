@@ -162,7 +162,7 @@ Using this connector you will have the ability to create and manage the followin
 | Permission.ps1          | Grant/Update/Revoke Nedap Provisioning Roles                                                      |
 | Entitlements.ps1        | Get Nedap Roles, with 10 options _(See below)_                                                    |
 | DefaultScope            | No script is required, Create static permission named DefaultScope                                   |
-| DefaultScope Grant.ps1  | Grant/Set Defaultscope calculated based on external Mapping                                       |
+| DefaultScope Grant.ps1  | Grant/Set Defaultscope calculated based on external Mapping. Because the Connector Support multiple accounts per Person, the permission Update script must also be used. You can place the Grant script here since this works in both situations.                                      |
 | DefaultScope Revoke.ps1 | Revoke Defaultscope                                                                               |
 | Resource.ps1            | Create validation files to check against the given Nedap location a team Ids in the mapping files |
 
@@ -236,7 +236,7 @@ Separate Scripts
      - Grant
        - For each account two Audit Logs with a summary of the DefaultScope applied, Location and Teams are separated Logs.
        - SubPermissions: For each account a set of the applied DefaultScope.
-     - Update
+     - Update *(Use Grant script)*
        - For each account two Audit Logs with a summary of the DefaultScope applied, Location and Teams are separated Logs.
        - SubPermissions: For each account a set of the applied DefaultScope.
      - Revoke
