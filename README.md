@@ -46,6 +46,7 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
     - [Remarks](#remarks)
       - [Connector Scope](#connector-scope)
       - [Datastorage](#datastorage)
+      - [Single Agent](#single-agent)
       - [Permission DisplayName](#permission-displayname)
       - [MappingFiles](#mappingfiles)
       - [Business Rules Validation Check](#business-rules-validation-check)
@@ -122,6 +123,9 @@ Example:
 
 #### Datastorage
   The connector uses DataStorage to keep track of the current permissions (Provisioning Roles). The DataStorage is behind a feature flag so must be enabled before it can be used in your tenant.
+  
+#### Single Agent
+  Since this connector is using DataStorage, all actions are executed one at the time. Therefore our best practice is the usage of one HelloID Agent for this connector. Also accessing the required local certificate file and CSV mapping files might result into slower processing and / or file locks.
 
 #### Permission DisplayName
  The display name of the permissions in HelloID are cached, and they only refresh after a specific time limit has been reached. As a result, the display name of the permissions is not directly saved in HelloID and therefore, not in the PowerShell scripts. Previous versions of the system, before December 28, 2022, relied on this display name. However, this dependency has been removed. Unfortunately, previously granted permissions will not be automatically corrected with the new display name and will continue to rely on the old display name. To avoid any issues caused by this, you can implement the following code as a temporary fix until all the granted permissions are re-granted.
