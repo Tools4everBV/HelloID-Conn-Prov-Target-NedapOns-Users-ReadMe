@@ -51,6 +51,7 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
       - [MappingFiles](#mappingfiles)
       - [Business Rules Validation Check](#business-rules-validation-check)
       - [Processing Multiple Accounts](#processing-multiple-accounts)
+      - [Preview Mode (dryRun):](#preview-mode-dryrun)
     - [Provisioning](#provisioning)
     - [Create:](#create)
     - [Update:](#update)
@@ -100,7 +101,7 @@ The following settings are required to connect to the API.
 - Direct HR employees synchronization with Nedap to manage the employees in Nedap
 - A valid Nedap Certificate (Tools4ever needs to request a certificate by Nedap to access the API)
  - Mapping between HR departments to Nedap Clients/Locations for determining the scope for the Nedap Provisioning roles and possibly for the DefaultScope.
- 
+
 - Mapping between HR Teams to Nedap Team/Employee for determining the scope for the Nedap Provisioning roles and possibly for the DefaultScope.
  - Determine the scope **Types** that are required for the role assignments. The connector supports default **ten scope possibilities**. The overview can be overwhelming to the customer in the entitlement overview. This means that there are ten entitlements created per Nedap Role. Please remove the entitlement types which not apply to your needs, by removing the code in the entitlement script.
 
@@ -123,7 +124,7 @@ Example:
 
 #### Datastorage
   The connector uses DataStorage to keep track of the current permissions (Provisioning Roles). The DataStorage is behind a feature flag so must be enabled before it can be used in your tenant.
-  
+
 #### Single Agent
   Since this connector is using DataStorage, all actions are executed one at the time. Therefore our best practice is the usage of one HelloID Agent for this connector. Also accessing the required local certificate file and CSV mapping files might result into slower processing and / or file locks.
 
@@ -140,7 +141,6 @@ Example:
   ```
 <br>
 
-
 #### MappingFiles
   The mapping files are used for both the role assignments and the Default scope in the permission scripts. It is assumed that the application between HR en Nedap is the same. Although for the Defaultscope extra columns are added AllEmployees and AllClients. These columns are ignored in the role assignments. The 'All' options for the role assignments are managed with separate entitlements.
 
@@ -153,6 +153,9 @@ In certain situations, an employment with the reference number 1000467-1 may hav
 Due to the support for multiple accounts within Nedap, the Update task may result in the removal of an account. This scenario presents a problem, as the default process order for revoking a trigger is to first revoke the permissions and then revoke the account entitlement. As a result, permissions are revoked before the account entitlement is outside of scope. This process is described in the HelloID documentation. However, in our particular scenario, the process operates differently. The update task first removes the account, resulting in the process order being reversed, with the account revocation occurring before the permission is revoked. This difference in process order leads to the removed account reference not appearing in the permission task, making it impossible to remove the associated permissions. The permission script subsequently performs a cleanup process to revoke the permissions of the previously removed accounts during the next run. However, this is not a straightforward process and will only be triggered during the next specific permission update or when manually prompted to update the permissions.
 
 > :bulb: Tip: To get a closing solution, you can specify the account and permission entitlements in distinct business rules. Additionally, it is suggested to configure the permission entitlement to be out of scope before the account entitlement during off-boarding or re-boarding procedures... To prevent out-of-sync permissions.
+
+#### Preview Mode (dryRun):
+Note that in preview mode (DryRun), all HelloID contracts of a Person are in scope. Therefore, it does not simulate the actual outcome when it comes to determining which account or permissions should be created, updated, or deleted. However, this DryRun mode is added to verify if the mapping, configuration setting, etc. are present and correct. The contracts in scope are normally configured in the business rules. This cannot be stimulated in Preview.
 
 ### Provisioning
 Using this connector you will have the ability to create and manage the following items in Nedap:
