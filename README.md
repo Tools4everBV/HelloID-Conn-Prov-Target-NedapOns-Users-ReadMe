@@ -52,6 +52,7 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
       - [Business Rules Validation Check](#business-rules-validation-check)
       - [Processing Multiple Accounts](#processing-multiple-accounts)
       - [Preview Mode (dryRun):](#preview-mode-dryrun)
+      - [Account Object](#account-object)
     - [Provisioning](#provisioning)
     - [Create:](#create)
     - [Update:](#update)
@@ -156,6 +157,9 @@ Due to the support for multiple accounts within Nedap, the Update task may resul
 
 #### Preview Mode (dryRun):
 Note that in preview mode (DryRun), all HelloID contracts of a Person are in scope. Therefore, it does not simulate the actual outcome when it comes to determining which account or permissions should be created, updated, or deleted. However, this DryRun mode is added to verify if the mapping, configuration setting, etc. are present and correct. The contracts in scope are normally configured in the business rules. This cannot be stimulated in Preview.
+
+#### Account Object
+The output presented in the result object merely represents a subset of the available data. When additional data is required, it can be obtained from the raw dataset.
 
 ### Provisioning
 Using this connector you will have the ability to create and manage the following items in Nedap:
