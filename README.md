@@ -20,7 +20,7 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/68013812/94918899-c672c700-04b3-11eb-9132-7125bbf77fa5.png" width=250>
-</p>
+</p> 
 
 ## Versioning
 |     | Description                                                                        | Date       |
