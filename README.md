@@ -4,7 +4,7 @@
 |:---------------------------|
 | This repository contains the connector and configuration code only. The implementer is responsible to acquire the connection details such as username, password, certificate, etc. You might even need to sign a contract or agreement with the supplier before implementing this connector. Please contact the client's application manager to coordinate the connector requirements.       |
 
-<br /> 
+<br />
 
 > :warning: **_Information_**
 > This connector requires the existence of Nedap Employees inside Nedap Ons. Limited Nedap employee support can be achieved using [this connector](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Employee-Readme).
@@ -20,7 +20,7 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/68013812/94918899-c672c700-04b3-11eb-9132-7125bbf77fa5.png" width=250>
-</p> 
+</p>
 
 ## Versioning
 |     | Description                                                                        | Date       |
@@ -94,6 +94,7 @@ The following settings are required to connect to the API.
 | Mapping File (Teams)            | The Path to the mapping file (HR Teams =>  Nedap Teams 1:M)  *Example can be found in the asset folder*     |
 | Directory Cache Locations Teams | Cache directory for current Nedap Ons locations and current Nedap Ons teams                                 |
 | CSV Delimiter                   | Mapping File CSV Separation Character                                                                       |
+| Explicit Mapping                 | When Enabled, rows that consist of explicit mappings involving both the department and title are not accumulated with rows that solely contain department-related information  |
 | Validate Team and Location      | Enable validation of mapped locations and teams                                                             |
 
 
