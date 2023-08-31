@@ -295,7 +295,7 @@ The following table displays an overview of the functionality of the Nedap Ons c
 
 ### Remote Nedap documentation
 * Nedap API Documentation → [klik](https://www.ons-api.nl/APIS.html)
-* Nedap ONS Authorization manual → [klik](https://ons-api.nl/support/Shield.html)
+* Nedap Ons Authorization manual → [klik](https://ons-api.nl/support/Shield.html)
 
 
 ## Setup the connector
@@ -303,26 +303,27 @@ The following table displays an overview of the functionality of the Nedap Ons c
 * Before using this connector make sure you enter the configuration and replace the following variables.
  <img src="Assets/configuration.png">
 
-* Besides the configuration tab, you can also configure script variables. To decide which property from a HelloID contract is used to look up a value in the mapping table, this is known as the HR Location or HR Team. And you can configure the Defaultscope behavior. Please note that some "same" configuration must be taken place in multiple scripts. Shown as below:
+* Besides the configuration tab, you can also configure script variables. To decide which property from a HelloID contract is used to look up a value in the mapping table, this is known as the HR Location or HR Team. And you can configure the MySelf property for the Defaultscope. Please note that some "same" configuration must be taken place in multiple scripts. Shown as below:
 
 #### Permissions.ps1  (Roles)
 
   ```PowerShell
-  $TeamProperty1              = { $_.Department.ExternalId }  # Mandatory
-  $TeamProperty2              = { $_.Title.ExternalId }  # Not mandatory
-  $locationProperty1          = { $_.Department.ExternalId }   # Mandatory
-  $locationProperty2          = $null # { $_.Title.ExternalId }  # Not used
-  $employmentContractFilter   = { $_.Custom.NedapOnsIdentificationNo } #Dienstverband
+  $TeamProperty1              = { $_.Department.ExternalId }           # Mandatory
+  $TeamProperty2              = { $_.Title.ExternalId }                # Not mandatory
+  $locationProperty1          = { $_.Department.ExternalId }           # Mandatory
+  $locationProperty2          = $null # { $_.Title.ExternalId }        # Not used
+  $employmentContractFilter   = { $_.Custom.NedapOnsIdentificationNo } # Dienstverband
   ```
 #### DefaultScope-Grant.ps1
 
   ```PowerShell
   #lookup Value of the person object
-  $teamLookupField1 = { $_.Department.ExternalId }                       # Mandatory
-  $teamLookupField2 = { $_.Title.ExternalId }                            # Not mandatory
-  $locationLookupField1 = { $_.Department.ExternalId }                   # Mandatory
-  $locationLookupField2 = { $_.Title.ExternalId }                        # Not mandatory
-  $employmentContractFilter = { $_.Custom.NedapOnsIdentificationNo }  # Dienstverband
+  $teamLookupField1           = { $_.Department.ExternalId }             # Mandatory
+  $teamLookupField2           = { $_.Title.ExternalId }                  # Not mandatory
+  $locationLookupField1       = { $_.Department.ExternalId }             # Mandatory
+  $locationLookupField2       = { $_.Title.ExternalId }                  # Not mandatory
+  $employmentContractFilter   = { $_.Custom.NedapOnsIdentificationNo }   # Dienstverband
+  $IsGrantMySelf              = $false                                   # Set Scope (MySelf)
   ```
 
 #### Create.ps1
