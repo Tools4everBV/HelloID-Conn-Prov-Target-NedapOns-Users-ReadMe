@@ -53,6 +53,7 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
       - [Processing Multiple Accounts](#processing-multiple-accounts)
       - [Preview Mode (dryRun):](#preview-mode-dryrun)
       - [Account Object](#account-object)
+      - [Known Issue](#know-issue)
     - [Provisioning](#provisioning)
     - [Create:](#create)
     - [Update:](#update)
@@ -161,6 +162,9 @@ Note that in preview mode (DryRun), all HelloID contracts of a Person are in sco
 
 #### Account Object
 The output presented in the result object merely represents a subset of the available data. When additional data is required, it can be obtained from the raw dataset.
+
+#### Known Issue
+Known Issue: Unable to remove a Nedap role from the Data Storage after it has been deleted in Nedap. [Known Issue: Remove Nedap Role DataStorage](https://forum.helloid.com/forum/helloid-connectors/general/4988-known-issue-a-removed-nedap-role-saved-in-the-helloid-datastroage)
 
 ### Provisioning
 Using this connector you will have the ability to create and manage the following items in Nedap:
