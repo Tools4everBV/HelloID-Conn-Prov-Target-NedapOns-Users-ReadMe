@@ -49,7 +49,7 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
       - [Single Agent](#single-agent)
       - [Permission DisplayName](#permission-displayname)
       - [MappingFiles](#mappingfiles)
-      - [Business Rules Validation Check](#business-rules-validation-check)
+      - [Account reference Validation Check](#account-reference-validation-check)
       - [Processing Multiple Accounts](#processing-multiple-accounts)
       - [Preview Mode (dryRun):](#preview-mode-dryrun)
       - [Account Object](#account-object)
@@ -147,9 +147,13 @@ Example:
 #### MappingFiles
   The mapping files are used for both the role assignments and the Default scope in the permission scripts. It is assumed that the application between HR en Nedap is the same. Although for the Defaultscope extra columns are added AllEmployees and AllClients. These columns are ignored in the role assignments. The 'All' options for the role assignments are managed with separate entitlements.
 
-#### Business Rules Validation Check
+#### Account reference Validation Check
+> :warning: *Known error: *No HelloID Account reference(s) found!**
 
-In certain situations, an employment with the reference number 1000467-1 may have an account entitlement, while another employment with the reference number 1000467-2 has been granted permissions for the Defaultscope or Provisioning Role. This leads to a mismatch between the account reference and the contracts in scope. This mismatch is a result of an incorrect configuration of the Business Rules. The connector checks for this mismatch and will generate a "warning" audit log, but the connector will still complete successfully without processing the permission. And if the Account Reference was removed the permissions will be removed from Nedap. It is important to ensure that by granting permissions to specific employment, they also have an associated account entitlement.
+In certain situations, an employment with the reference number 1000467-1 may have an account entitlement, while another employment with the reference number 1000467-2 has been granted permissions for the Defaultscope or Provisioning Role. This leads to a mismatch between the account reference and the contracts in scope. The mismatch results from an incorrect configuration of the Business Rules. The connector checks for this mismatch and generates an error and an audit log. Unfortunately, there is a second use case where an account reference cannot be checked beforehand. When an account is not created correctly in the update script, the permission script triggers after 24 hours to update the permissions because the processing order is not forced. *(Read more: [HelloId Processin order](https://docs.helloid.com/en/provisioning/enforcement.html))*
+As a result, the permissions script keeps failing until the account is created in the second use case, or in the first use case when the business rules are modified to match the requirements. After this, the problem will be automatically resolved in the next scheduled/manual enforcement
+
+A drawback of this processing is that the account with a correctly filled account reference gets updated in Nedap Ons. However, because the HelloId action failed, it keeps retrying until the issue with the other account is resolved, also causing the 'correct' account to receive updates each time. Additionally, the desired permissions are not saved in the data storage. When another permission is triggered from HelloID, it gets overwritten because the desired permission is not stored in the data storage. The same problem exists if the business rule has been configured incorrectly.
 
 #### Processing Multiple Accounts
 
@@ -165,7 +169,6 @@ The output presented in the result object merely represents a subset of the avai
 
 #### Known Issue
 Known Issue: Unable to remove a Nedap role from the Data Storage after it has been deleted in Nedap. [Known Issue: Remove Nedap Role DataStorage](https://forum.helloid.com/forum/helloid-connectors/general/4988-known-issue-a-removed-nedap-role-saved-in-the-helloid-datastroage)
-
 ### Provisioning
 Using this connector you will have the ability to create and manage the following items in Nedap:
 
