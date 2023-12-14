@@ -26,13 +26,13 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
 |     | Description                                                                       | Date       |
 | --- | ----------------------------------------------------------------------------------| ---------- |
 |     | Update error handling "Account reference dependency" from `Warning` to `Error`  <br> Bug fix for the account object in Updates.ps1     | 2023-12-13 |
-|     | Updated DefaultScope management. Moved DefaultScope to operate as Permissions. <br> *:warning:Might have implications on earlier implementations read: [Permission Displayname](#permission-displayname)* | 2022-12-28 |
+|     | Updated DefaultScope management. Moved DefaultScope to operate as Permissions. <br> :warning: *Might have implications on earlier implementations read: [Permission Displayname](#permission-displayname)* | 2022-12-28 |
 |     | Added Support for managing DefaultScope <br> Added Resource.ps1 validation script | 2022-06-15 |
 |     | Added Role assignments with role and DefaultScope                                  | 2022-03-24 |
 |     | Initial release                                                                    | 2021-08-27 |
 
 > :warning: Upgrade warning!
-> Since the last update on December 28, 2022, the display name for permissions has been changed. This can resolve in empty audit logging for certain actions.[Permission Displayname](#permission-displayname)
+> Since the last update on December 28, 2022, the display name for permissions has been changed. This can be resolved in empty audit logging for certain actions.[Permission Displayname](#permission-displayname)
 
 
 <!-- TABLE OF CONTENTS -->
@@ -124,16 +124,16 @@ Example:
 ### Remarks
 
 #### Connector Scope
-  This connector does only manage the users and the authorizations. And is intended to be used along with a direct sync HR. AFAS for example. So the Employee objects are not managed in this connector. The connector depends on this sync. When an employee object is not found the user cannot be created.
+  This connector only manages the users and the authorizations. And is intended to be used along with a direct sync HR. AFAS for example. So the Employee objects are not managed in this connector. The connector depends on this sync. When an employee object is not found the user cannot be created.
 
 #### Datastorage
   The connector uses DataStorage to keep track of the current permissions (Provisioning Roles). The DataStorage is behind a feature flag so must be enabled before it can be used in your tenant.
 
 #### Single Agent
-  Since this connector is using DataStorage, all actions are executed one at the time. Therefore our best practice is the usage of one HelloID Agent for this connector. Also accessing the required local certificate file and CSV mapping files might result into slower processing and / or file locks.
+  Since this connector is using DataStorage, all actions are executed one at a time. Therefore our best practice is the usage of one HelloID Agent for this connector. Also accessing the required local certificate file and CSV mapping files might result in slower processing and/or file locks.
 
 #### Permission DisplayName
- The display name of the permissions in HelloID are cached, and they only refresh after a specific time limit has been reached. As a result, the display name of the permissions is not directly saved in HelloID and therefore, not in the PowerShell scripts. Previous versions of the system, before December 28, 2022, relied on this display name. However, this dependency has been removed. Unfortunately, previously granted permissions will not be automatically corrected with the new display name and will continue to rely on the old display name. To avoid any issues caused by this, you can implement the following code as a temporary fix until all the granted permissions are re-granted.
+ The display names of the permissions in HelloID are cached, and they only refresh after a specific time limit has been reached. As a result, the display name of the permissions is not directly saved in HelloID and therefore, not in the PowerShell scripts. Previous versions of the system, before December 28, 2022, relied on this display name. However, this dependency has been removed. Unfortunately, previously granted permissions will not be automatically corrected with the new display name and will continue to rely on the old display name. To avoid any issues caused by this, you can implement the following code as a temporary fix until all the granted permissions are re-granted.
   ```Powershell
   if ('DisplayName' -notin $pRef.PSObject.Properties.name  ) {
       if ($eRef.PermissionDisplayName -ne '<unknown permission>') {
