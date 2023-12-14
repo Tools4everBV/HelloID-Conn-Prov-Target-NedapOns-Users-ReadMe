@@ -23,8 +23,9 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
 </p>
 
 ## Versioning
-|     | Description                                                                        | Date       |
+|     | Description                                                                       | Date       |
 | --- | ----------------------------------------------------------------------------------| ---------- |
+|     | Update error handling "Account reference dependency" from `Warning` to `Error`  <br> Bug fix for the account object in Updates.ps1     | 2023-12-13 |
 |     | Updated DefaultScope management. Moved DefaultScope to operate as Permissions. <br> *:warning:Might have implications on earlier implementations read: [Permission Displayname](#permission-displayname)* | 2022-12-28 |
 |     | Added Support for managing DefaultScope <br> Added Resource.ps1 validation script | 2022-06-15 |
 |     | Added Role assignments with role and DefaultScope                                  | 2022-03-24 |
