@@ -302,8 +302,8 @@ The following table displays an overview of the functionality of the Nedap Ons c
 
 
 ### Remote Nedap documentation
-* Nedap API Documentation → [klik](https://www.ons-api.nl/APIS.html)
-* Nedap Ons Authorization manual → [klik](https://ons-api.nl/support/Shield.html)
+* Nedap API Documentation → [klik](https://www.ons-api.nl/techniek/apis/APIS.html) 
+* Nedap Ons Authorization manual → [klik](https://www.ons-api.nl/english/authorization/AuthorizationInOns.html) 
 
 
 ## Setup the connector
