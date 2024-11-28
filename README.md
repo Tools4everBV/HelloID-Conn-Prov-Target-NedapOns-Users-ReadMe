@@ -291,7 +291,7 @@ All in One Script
 
     Result
     * Permission for each entitlement
-    *	Audit Logs for each entitlement with a summary of the Scope (Location and Teams) of the Nedap Role.
+    *	Audit Logs for each entitlement with a summary of the Scope of the Nedap Role.
     * SubPermissions for each entitlement with an Account and location/team combination
 
 
