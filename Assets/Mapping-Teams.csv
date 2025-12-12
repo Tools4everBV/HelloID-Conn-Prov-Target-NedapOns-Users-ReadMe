@@ -1,4 +1,4 @@
-Department.ExternalId;Title.ExternalId;NedapTeamId;AllEmployees
+HelloIDPrimaryLookupKey;HelloIDSecondaryLookupKey;NedapTeamIds;AllEmployees
 GRO-726;;581
 GRO-726;DEVELOP;1,2
 GRO-726;MANAGER;;True
@@ -7,4 +7,13 @@ GAM-837;;582
 MUS-175;;583
 HEA-625;;1,2,581
 ADMINISTR;;31
-DESGTEAM;MANAGER;;true
+DESGTEAM;MEDTES;581;true
+DESGTEAM;;1,2;
+SAITEAM;MEDSBI;581;true
+SAITEAM;;1,2;
+ONTTEAM;;1,2;true
+ONT;;1,2;true
+HPDTEAM;;1,2;true
+CONTEAM;;1,2;true
+DESG;;1,2;true
+
