@@ -445,21 +445,21 @@ The following table displays an overview of the functionality of the Nedap Ons c
 
 The following endpoints are used by the connector
 
-| Endpoint                                                        | Description                            |
-| --------------------------------------------------------------- | -------------------------------------- |
-| /t/users                                                        | Create users                           |
-| /t/users/by_uuid/:accountUuid                                   | Retrieve specific user information     |
-| /t/users/by_employee_id/:employeeId                             | Retrieve specific user information     |
-| /t/employees/by_identification_no/:identificationNo             | Retrieve specific employee information |
-| /t/employees/x-stream-connect/data                              | Retrieve employees information list    |
-| /t/users/x-stream-connect/data                                  | Retrieve users information list        |
-| /t/authorization/provisioning/users/:accountUuid/my_teams       | Update DefaultScope Permissions        |
-| /t/authorization/provisioning/users/:accountUuid/my_locations   | Update DefaultScope Permissions        |
-| /t/authorization/provisioning/users/:accountUuid/scope_settings | Update DefaultScope Permissions        |
-| /t/authorization/provisioning/users/:accountUuid/duties         | Update Roles Permissions               |
-| /t/authorization/provisioning/roles                             | Retrieve Role information              |
-| /t/locations                                                    | Retrieve Location information          |
-| /t/teams                                                        | Retrieve Team information              |
+| Endpoint                                                            | Description                            |
+| ------------------------------------------------------------------- | -------------------------------------- |
+| /v0/administration/users                                            | Create users                           |
+| /v0/administration/users/by_uuid/:accountUuid                       | Retrieve specific user information     |
+| /v0/administration/users/by_employee_id/:employeeId                 | Retrieve specific user information     |
+| /v0/administration/employees/by_identification_no/:identificationNo | Retrieve specific employee information |
+| /v0/xstream/employees/data                                          | Retrieve employees information list    |
+| /v0/xstream/responsibilities/data                                   | Retrieve users information list        |
+| /v0/authorization/provisioning/users/:accountUuid/my_teams          | Update DefaultScope Permissions        |
+| /v0/authorization/provisioning/users/:accountUuid/my_locations      | Update DefaultScope Permissions        |
+| /v0/authorization/provisioning/users/:accountUuid/scope_settings    | Update DefaultScope Permissions        |
+| /v0/authorization/provisioning/users/:accountUuid/duties            | Update Roles Permissions               |
+| /v0/authorization/provisioning/roles                                | Retrieve Role information              |
+| /v0/administration/locations                                        | Retrieve Location information          |
+| /v0/administration/teams                                            | Retrieve Team information              |
 
 ### API documentation
 * Nedap API Documentation → [Click](https://www.ons-api.nl/english/technical/APIS.html)
