@@ -38,6 +38,7 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
     - [Generic](#generic)
       - [Connector Scope](#connector-scope)
       - [DataStorage](#datastorage)
+      - [Unmanage removed entitlement(s)](#unmanage-removed-entitlements)
       - [Single Agent](#single-agent)
       - [Preview Mode (dryRun):](#preview-mode-dryrun)
       - [Account Reference](#account-reference)
@@ -212,6 +213,14 @@ These mapping can be found in the default scope and role permission scripts.
 
 #### DataStorage
   The connector uses DataStorage to keep track of the current permissions; `Provisioning Roles` and `DefaultScope`. The DataStorage is behind a feature flag so must be enabled before it can be used in your tenant.
+
+
+#### Unmanage removed entitlement(s)
+**Important:** The Unmanage action in HelloID is not supported for entitlements in this connector.
+
+Nedap permissions are stored in the DataStorage. Unmanaging an entitlement does not remove it from the DataStorage or from Nedap, which may cause unexpected behavior.
+
+Always Revoke the entitlements from the business rule instead of unmanaging it.
 
 #### Single Agent
   Since this connector is using DataStorage, all actions are executed one at a time. Therefore our best practice is the usage of one HelloID Agent for this connector. Also accessing the required local certificate file and CSV mapping files might result in slower processing and/or file locks.
