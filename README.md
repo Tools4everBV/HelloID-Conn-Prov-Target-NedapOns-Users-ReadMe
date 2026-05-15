@@ -287,7 +287,7 @@ Now, when assigning a role with the DefaultScope, the connector checks the exist
 #### CSV Lookup
 - The entitlement `Permission - DefaultScope (Old)` performs a lookup in the mapping to retrieve AllEmployees and AllClients.
 - The entitlements `Permission - :RoleName - Type: DefaultScoped` also perform a lookup in the mapping to retrieve AllEmployees and AllClients.
-- Permission scopes granted from the mapping are marked with an asterisk (*) in the audit logs and in the SubPermissions, indicating that the scope originates from the mapping file and not directly from an entitlement.
+- Permission scopes granted from the mapping are marked with a `(csv)` in the audit logs and in the SubPermissions, indicating that the scope originates from the mapping file and not directly from an entitlement.
 
 ### Notifications
 #### IsCreated | IsDeleted
