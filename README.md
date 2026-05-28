@@ -134,21 +134,22 @@ Example:
 
 The following settings are required to connect to the API.
 
-| Setting                            | Description                                                                                                              |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Environment URL API                | Development, Acceptance, Production                                                                                      |
-| Certificate (.PFX) Path            | Full path to Certificate > Nedap-cert.pfx                                                                                 |
-| Certificate Password               | Password of the certificate                                                                                              |
-| Grant Default scope Myself         | To Enable or Disable if `Myself` is granted during permissions grant                                                       |
-| Mapping (Locations)                | The Path to the mapping file (HR Location => Nedap location 1:M) *Example can be found in the asset folder*              |
-| Mapping (Teams)                    | The Path to the mapping file (HR Teams =>  Nedap Teams 1:M)  *Example can be found in the asset folder*                  |
-| CSV Delimiter                      | Mapping File CSV Separation Character                                                                                    |
-| Explicit Mapping                   | When Enabled, rows that consist of explicit mappings involving both the department and title are not accumulated with rows that solely contain department-related information |
-| Validate Team and Location         | Enable validation of mapped locations and teams                                                                          |
-| Directory Cache Locations Teams    | Cache directory for current Nedap Ons locations and current Nedap Ons teams                                              |
-| Import Only Active Employees.      | When toggled, The Import script will only import user accounts that have active contracts on the employee account in the Nedap Ons system. |
-| Days before start of the contract. | Days before start of the contract. Only used when the `Import Only Active Employees` is enabled.                         |
-| Days after end of the contract.    | Days after end of the contract. Only used when the `Import Only Active Employees` is enabled.                            |
+| Setting                                | Description                                                                                                 |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Environment URL API                    | Development, Acceptance, Production                                                                         |
+| Certificate (.PFX) Path                | Full path to Certificate > Nedap-cert.pfx                                                                   |
+| Certificate Password                   | Password of the certificate                                                                                 |
+| Grant 'Myself to Default scope         | When enabled, the scope 'De medewerker zelf' will be granted to the DefaultScope of the account             |
+| Grant 'Myself' to each Role assignment | When enabled, the scope 'De medewerker zelf' will granted for each Role assignment                           |
+| Mapping (Locations)                    | The Path to the mapping file (HR Location => Nedap location 1:M) *Example can be found in the asset folder* |
+| Mapping (Teams)                        | The Path to the mapping file (HR Teams =>  Nedap Teams 1:M)  *Example can be found in the asset folder*     |
+| CSV Delimiter                          | Mapping File CSV Separation Character                                                                       |
+| Explicit Mapping                       | When Enabled, rows that consist of explicit mappings involving both the department and title are not accumulated with rows that solely contain department-related information  |
+| Validate Team and Location             | Enable validation of mapped locations and teams                                                             |
+| Directory Cache Locations Teams        | Cache directory for current Nedap Ons locations and current Nedap Ons teams                                 |
+| Import Only Active Employees.          | When toggled, The Import script will only import user accounts that have active contracts on the employee account in the Nedap Ons system. |
+| Days before start of the contract.     | Days before start of the contract. Only used when the `Import Only Active Employees` is enabled.            |
+| Days after end of the contract.        | Days after end of the contract. Only used when the `Import Only Active Employees` is enabled.               |
 
 ### Correlation configuration
 
