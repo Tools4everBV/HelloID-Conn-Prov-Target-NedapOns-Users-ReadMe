@@ -6,12 +6,12 @@
 > [!IMPORTANT]
 > This repository contains the connector and configuration code only. The implementer is responsible to acquire the connection details such as username, password, certificate, etc. You might even need to sign a contract or agreement with the supplier before implementing this connector. Please contact the client's application manager to coordinate the connector requirements.
 
-> [!WARNING] Extensive knowledge
-> This connector requires the existence of Nedap Employees inside Nedap Ons. Limited Nedap employee support can be achieved using [this connector](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapOns-Employee-Readme).
+> [!WARNING]
+> Extensive knowledge. This connector requires the existence of Nedap Employees inside Nedap Ons. Limited Nedap employee support can be achieved using [this connector](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapOns-Employee-Readme).
 Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap employee) are required.
 
-> [!WARNING] Upgrade warning!
-> Since the last update in (November) 2024/2025, Nedap has altered the authorization structure, which has had an impact on the API. The connector has been adjusted to integrate these changes in the API while also providing backward compatibility support. For further details, refer to chapters `Backwards Compatible` and `DefaultScope` in the Public README.md.
+> [!WARNING]
+> Upgrade warning! Since the last update in (November) 2024/2025, Nedap has altered the authorization structure, which has had an impact on the API. The connector has been adjusted to integrate these changes in the API while also providing backward compatibility support. For further details, refer to chapters `Backwards Compatible` and `DefaultScope` in the Public README.md.
 
 
 <p align="center">
