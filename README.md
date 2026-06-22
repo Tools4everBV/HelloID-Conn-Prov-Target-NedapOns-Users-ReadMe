@@ -6,7 +6,7 @@ Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap 
 
 
 > [!WARNING]
-> Upgrade warning! Since the last update in (November) 2024/2025, Nedap has altered the authorization structure, which has had an impact on the API. The connector has been adjusted to integrate these changes in the API while also providing backward compatibility support. For further details, refer to chapters `Backwards Compatible` and `DefaultScope` in the Public README.md.
+> Upgrade warning! Since the PowerShell V2 connector update, Nedap has altered the authorization structure, which has had an impact on the API. The connector has been adjusted to integrate these changes in the API while also providing backward compatibility support. For further details, refer to chapters `Backwards Compatible` and `DefaultScope` in the Public README.md.
 
 > [!IMPORTANT]
 > This connector (README) is recently upgraded to a PowerShell V2 connector. If you are still using the PowerShell V1 version, please refer to the latest Github releases. [Powershell V1 code](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapOns-Users/tree/v0.9.0), or [Powershell V1 Readme](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapOns-Users-ReadMe/blob/v.0.9.0/README.md)
