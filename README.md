@@ -385,8 +385,8 @@ if (-not [string]::IsNullOrEmpty($($actionContext.References.Account))) {
   }
   ```
 
-```markdown
 ## Governance Remarks
+
 The Nedap Users Connector supports importing and reconciling Nedap user accounts. Reconciliation can be used to identify differences between the account references managed by HelloID and the user accounts returned by Nedap.
 
 The reconciliation functionality is read-only in the current versions of HelloID and the Nedap Users Connector. Reported differences can be investigated, but cannot be resolved directly from reconciliation.
@@ -521,7 +521,6 @@ Compare the individual accounts in the HelloID account reference with all accoun
 
 #### Duplicate or historical accounts
 Determine whether the account is still required and whether it was created or managed by HelloID. Accounts that are not managed by HelloID must be reviewed and, where applicable, corrected directly in Nedap.
-```
 
 ## Provisioning
 
