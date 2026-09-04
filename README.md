@@ -302,7 +302,7 @@ Granting these individual entitlements results in the same access as the Default
 The same applies to the default scope in role assignments. The DefaultScope assignment is also present for backward compatibility. Therefore, the recommended practice is to use the more defined entitlements: *DefaultScopeTeams, DefaultScopeLocations, AllClients* and *AllEmployees*.
 
 > [!NOTE]
-> **Only use DefaultScope (legacy) in an update scenario.** For new implementations, use the individual entitlements directly.
+> **Only use DefaultScope (legacy) during the update of an existing connector implementation.** For new implementations, use the individual entitlements directly.
 
 #### Backwards Compatible
 
@@ -530,7 +530,7 @@ Using this connector you will have the ability to create and manage the followin
 
 * List Nedap Provisioning Roles (Name + GUID)
 - Entitlement options: *(Please keep only the scopes the customer need)*
-  - DefaultScope (legacy) *Only use in Update scenario*
+  - DefaultScope (legacy) *(Only use during the update of an existing connector)*
   - RoleScoped
   - Custom Scope
     - Clients
@@ -550,7 +550,7 @@ Using this connector you will have the ability to create and manage the followin
 ### DefaultScope Permissions
 
 - Static values: you can use the `defaultScopeEntitlements.ps1` script or enter six static entitlements. These values are then used in the permissions (Defaultscope). The preferable way is to use the script to avoid typos. Make sure that the "references" match the following values.
-  - DefaultScope (legacy) *Only use in Update scenario*
+  - DefaultScope (legacy) *(Only use during the update of an existing connector)*
   - DefaultScopeTeams
   - DefaultScopeLocations
   - DefaultScopeAllClients
@@ -619,18 +619,17 @@ The following endpoints are used by the connector
 | /v0/administration/teams                                            | Retrieve Team information              |
 
 ### API documentation
-
 * Nedap API Documentation → [Click](https://www.ons-api.nl/english/technical/APIS.html)
-- Nedap Ons Authorization manual → [Click](https://www.ons-api.nl/english/authorization/AuthorizationInOns.html)
+* Nedap Ons Authorization manual → [Click](https://www.ons-api.nl/english/authorization/AuthorizationInOns.html)
 
 ## Getting help
 
 > [!TIP]
-> *For more information on how to configure a HelloID PowerShell connector, please refer to our [documentation](https://docs.helloid.com/en/provisioning/target-systems/powershell-v2-target-systems.html) pages*.
+> _For more information on how to configure a HelloID PowerShell connector, please refer to our [documentation](https://docs.helloid.com/en/provisioning/target-systems/powershell-v2-target-systems.html) pages_.
 
 > [!TIP]
-> *If you need help, feel free to ask questions on our [forum](https://forum.helloid.com/forum/helloid-connectors/provisioning/313-helloid-prov-target-nedap-ons-users)*.
+>  _If you need help, feel free to ask questions on our [forum](https://forum.helloid.com/forum/helloid-connectors/provisioning/313-helloid-prov-target-nedap-ons-users)_.
 
 ## HelloID docs
 
-The official HelloID documentation can be found at: <https://docs.helloid.com/>
+The official HelloID documentation can be found at: https://docs.helloid.com/
